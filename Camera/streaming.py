@@ -1,8 +1,7 @@
 import LoadData
+
 import cv2
-import cvzone
 import time
-import torch
 from ultralytics import YOLO
 from deep_sort_realtime.deepsort_tracker import DeepSort
 
@@ -22,7 +21,7 @@ while True:
     if not ret:
         break
 
-    frame=cv2.resize(frame,(360,640))
+    frame=cv2.resize(frame,(450,800))
 
     detect  = []
 

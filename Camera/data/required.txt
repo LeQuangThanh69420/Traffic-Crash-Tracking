@@ -1,5 +1,6 @@
 opencv-python
 cvzone
+torch
 ultralytics
 deep-sort-realtime
 signalr-client
