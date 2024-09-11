@@ -8,7 +8,6 @@ def GetClasses():
                 class_name, color_code = line.split()
                 color_tuple = tuple(map(int, color_code.split(',')))
                 classes[class_name] = color_tuple
-
     return classes
 
 def GetDevice():
