@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Server.Data;
-using Server.Helpers;
+using Server.Extensions;
 using Server.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,14 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
-builder.Services.AddCors();
-builder.Services.AddDbContext<DataContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), x => x.UseNetTopologySuite());
-});
-builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-builder.Services.AddSignalR();
+builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
