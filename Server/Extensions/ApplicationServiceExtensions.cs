@@ -34,7 +34,7 @@ namespace Server.Extensions
             services.AddControllers();
             services.AddCors();
             services.AddSignalR();
-            services.AddScoped<TokenService>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>

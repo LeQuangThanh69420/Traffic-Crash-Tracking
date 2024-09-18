@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Server.Services
 {
-    public class TokenService
+    public class TokenService : ITokenService
     {
         private readonly SymmetricSecurityKey _key;
         public TokenService(IConfiguration config)
