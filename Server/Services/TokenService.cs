@@ -13,7 +13,7 @@ namespace Server.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
 
-        public async Task<string> CreateToken(long id, string name, string role)
+        public string CreateToken(long id, string name, string role)
         {
             var claims = new List<Claim>
             {
@@ -33,7 +33,7 @@ namespace Server.Services
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var token = tokenHandler.CreateToken(tokenDescriptor); 
+            var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
         }

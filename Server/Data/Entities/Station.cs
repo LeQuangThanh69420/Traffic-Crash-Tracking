@@ -11,5 +11,6 @@ namespace Server.Data.Entities
         public string Role { get; set; }
         public string Address { get; set; }
         public Geometry Location { get; set; }
+        public bool IsActive { get; set; }
     }
 }

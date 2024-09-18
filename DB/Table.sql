@@ -18,6 +18,7 @@ CREATE TABLE Station (
     Role varchar(10) NOT NULL,
     Address NVARCHAR(100) NOT NULL,
     Location GEOGRAPHY NOT NULL,
+    IsActive BIT NOT NULL,
 );
 GO
 
@@ -25,6 +26,7 @@ CREATE TABLE Camera (
     CameraId BIGINT IDENTITY(1,1) PRIMARY KEY,
     CameraName NVARCHAR(50) NOT NULL UNiQUE,
     Location GEOGRAPHY NOT NULL,
+    IsActive BIT NOT NULL,
 );
 GO
 
