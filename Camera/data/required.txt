@@ -4,3 +4,4 @@ torch
 ultralytics
 deep-sort-realtime
 signalr-client
+requests
