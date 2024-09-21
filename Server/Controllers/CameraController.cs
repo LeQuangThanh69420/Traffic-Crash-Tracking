@@ -24,7 +24,7 @@ namespace Server.Controllers
                 return NotFound(new { message = "Camera not found or it's unactive"} );
             }
             else {
-                var token = _token.CreateToken(camera.CameraId, camera.CameraName, "Camera");
+                var token = _token.CreateToken(camera.CameraId, camera.CameraName, Roles.Camera);
                 return Ok(new { token = "Bearer " + token } );
             }
         }
