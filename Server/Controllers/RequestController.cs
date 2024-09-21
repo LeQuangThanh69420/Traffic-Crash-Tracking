@@ -1,9 +1,13 @@
+using Server.Data.IRepositories;
+
 namespace Server.Controllers
 {
     public class RequestController : BaseApiController
     {
-        public RequestController()
+        private readonly IUnitOfWork _uow;
+        public RequestController(IUnitOfWork uow)
         {
+            _uow = uow;
         }
     }
 }
