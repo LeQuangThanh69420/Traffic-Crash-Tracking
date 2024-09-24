@@ -7,9 +7,11 @@ from deep_sort_realtime.deepsort_tracker import DeepSort
 
 classes = LoadData.GetClasses()
 model = YOLO(LoadData.GetModel(1)).to(LoadData.GetDevice())
+
 capture = cv2.VideoCapture("./Camera/videos/vdtainan.mp4")
 width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
 tracker = DeepSort(max_age = 5)
 tracks = []
 
