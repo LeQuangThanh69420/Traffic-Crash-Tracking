@@ -20,7 +20,7 @@ namespace Server.Controllers
         {
             var camera = await _uow.CameraRepository.GetCameraByName(cameraName);
             if (camera == null) {
-                return NotFound(new { message = "Camera not found or it's unactive"} );
+                return NotFound(new { message = "Camera not found or it's unactive" } );
             }
             else {
                 var token = _token.CreateToken(camera.CameraId, camera.CameraName, Roles.Camera);
