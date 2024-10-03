@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+using Server.Data;
 using Server.Data.IRepositories;
 using Server.Services;
 
@@ -13,21 +13,11 @@ namespace Server.Controllers
             _uow = uow;
             _token = token;
         }
-
-        [HttpPost("Login")]
-        public async Task<ActionResult> Login([FromBody] string username, [FromBody] string password)
+        
+        private bool IsValidRole(string role)
         {
-            var station = await _uow.StationRepository.GetStation(username, password);
-            if (station == null) {
-                return NotFound(new { message = "Wrong username or password" } );
-            }
-            if (station.IsActive == false) {
-                return NotFound(new { message = "Your account's unactive" } );
-            }
-            else {
-                var token = _token.CreateToken(station.StationId, station.StationName, station.Role);
-                return Ok(new { token = "Bearer " + token } );
-            }
+            var validRoles = new List<string> { Roles.Admin, Roles.Moderator, Roles.Member, Roles.Camera };
+            return validRoles.Contains(role);
         }
     }
 }

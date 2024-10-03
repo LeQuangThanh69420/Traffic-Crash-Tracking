@@ -24,7 +24,7 @@ GO
 
 CREATE TABLE Camera (
     CameraId BIGINT IDENTITY(1,1) PRIMARY KEY,
-    CameraName NVARCHAR(50) NOT NULL UNiQUE,
+    CameraName NVARCHAR(50) NOT NULL UNIQUE,
     Location GEOGRAPHY NOT NULL,
     IsActive BIT NOT NULL,
 );
