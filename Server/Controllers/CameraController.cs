@@ -18,13 +18,33 @@ namespace Server.Controllers
         [HttpGet("GetCameraToken")]
         public async Task<ActionResult> GetCameraToken([FromQuery] string cameraName)
         {
-            var camera = await _uow.CameraRepository.GetCameraByName(cameraName);
-            if (camera == null) {
-                return NotFound(new { message = "Camera not found or it's unactive" } );
+            try 
+            {
+                var camera = await _uow.CameraRepository.GetCameraByName(cameraName);
+                if (camera == null) {
+                    return NotFound(new { message = "Camera not found or it's unactive" } );
+                }
+                else {
+                    var token = _token.CreateToken(camera.CameraId, camera.CameraName, Roles.Camera);
+                    return Ok(new { token = "Bearer " + token } );
+                }
             }
-            else {
-                var token = _token.CreateToken(camera.CameraId, camera.CameraName, Roles.Camera);
-                return Ok(new { token = "Bearer " + token } );
+            catch (Exception ex) 
+            {
+                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
+            }
+        }
+
+        [HttpGet("GetCameras")]
+        public async Task<ActionResult> GetCameras()
+        {
+            try 
+            {
+                return Ok(await _uow.CameraRepository.GetCameras());
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
             }
         }
     }

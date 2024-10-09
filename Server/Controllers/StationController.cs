@@ -15,30 +15,44 @@ namespace Server.Controllers
             _token = token;
         }
 
-        [HttpGet("GetStations")]
-        public async Task<ActionResult> GetStations()
-        {
-            return Ok(await _uow.StationRepository.GetStations());
-        }
-
         [HttpPost("Login")]
         public async Task<ActionResult> Login([FromBody] StationLoginInputDTO input)
         {
-            var station = await _uow.StationRepository.GetStation(input.Username, input.Password);
-            if (station == null) {
-                return NotFound(new { message = "Wrong username or password" } );
+            try 
+            {
+                var station = await _uow.StationRepository.GetStation(input.Username, input.Password);
+                if (station == null) {
+                    return NotFound(new { message = "Wrong username or password" } );
+                }
+                if (station.IsActive == false) {
+                    return NotFound(new { message = "Your account's unactive" } );
+                }
+                else {
+                    var token = _token.CreateToken(station.StationId, station.Username, station.Role);
+                    return Ok(new StationLoginOutputDTO() { 
+                            Token = "Bearer " + token, 
+                            StationName = station.StationName, 
+                            Role = station.Role 
+                        } 
+                    );
+                }
             }
-            if (station.IsActive == false) {
-                return NotFound(new { message = "Your account's unactive" } );
+            catch (Exception ex) 
+            {
+                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
             }
-            else {
-                var token = _token.CreateToken(station.StationId, station.Username, station.Role);
-                return Ok(new StationLoginOutputDTO() { 
-                        Token = "Bearer " + token, 
-                        StationName = station.StationName, 
-                        Role = station.Role 
-                    } 
-                );
+        }
+
+        [HttpGet("GetStations")]
+        public async Task<ActionResult> GetStations()
+        {
+            try 
+            {
+                return Ok(await _uow.StationRepository.GetStations());
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
             }
         }
     }
