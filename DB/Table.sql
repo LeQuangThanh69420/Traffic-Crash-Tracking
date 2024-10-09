@@ -12,10 +12,10 @@ GO
 
 CREATE TABLE Station (
     StationId BIGINT IDENTITY(1,1) PRIMARY KEY,
-    StationName NVARCHAR(50) NOT NULL,
-    Username varchar(16) NOT NULL CHECK (LEN(Username) >= 8) UNIQUE,
-    Password varchar(16) NOT NULL CHECK (LEN(Password) >= 8),
-    Role varchar(10) NOT NULL,
+    StationName NVARCHAR(50) NOT NULL UNIQUE,
+    Username NVARCHAR(16) NOT NULL CHECK (LEN(Username) >= 8) UNIQUE,
+    Password NVARCHAR(16) NOT NULL CHECK (LEN(Password) >= 8),
+    Role VARCHAR(10) NOT NULL,
     Address NVARCHAR(100) NOT NULL,
     Location GEOGRAPHY NOT NULL,
     IsActive BIT NOT NULL,
@@ -37,13 +37,13 @@ CREATE TABLE Request (
     CreatedDate DATETIME2(0) NOT NULL,
     Checked BIT,
     CheckedDate DATETIME2(0),
-    Description varchar(300),
+    Description VARCHAR(300),
 );
 GO
 
 CREATE TABLE Photo (
     PhotoId BIGINT IDENTITY(1,1) PRIMARY KEY,
     RequestId BIGINT NOT NULL FOREIGN KEY REFERENCES Request(RequestId),
-    PhotoURL varchar(300) NOT NULL,
+    PhotoURL VARCHAR(300) NOT NULL,
 );
 GO
