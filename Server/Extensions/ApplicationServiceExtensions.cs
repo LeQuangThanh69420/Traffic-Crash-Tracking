@@ -33,7 +33,10 @@ namespace Server.Extensions
 
             services.AddControllers();
             services.AddCors();
-            services.AddSignalR();
+            services.AddSignalR(options =>
+            {
+                options.MaximumReceiveMessageSize = 10 * 1024 * 1024;
+            });
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
