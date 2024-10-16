@@ -9,5 +9,6 @@ namespace Server.Data.Entities
         public bool? Checked { get; set; }
         public DateTime? CheckedDate { get; set; }
         public string? Description { get; set; }
+        public string PhotoURL { get; set; }
     }
 }

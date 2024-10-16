@@ -13,7 +13,6 @@ namespace Server.Data.Repositories
         public IStationRepository StationRepository => new StationRepository(_context);
         public ICameraRepository CameraRepository => new CameraRepository(_context);
         public IRequestRepository RequestRepository => new RequestRepository(_context);
-        public IPhotoRepository PhotoRepository => new PhotoRepository(_context);
         
         public async Task<bool> Complete()
         {

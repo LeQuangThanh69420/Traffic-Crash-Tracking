@@ -5,7 +5,6 @@ namespace Server.Data.IRepositories
         IStationRepository StationRepository { get; }
         ICameraRepository CameraRepository { get; }
         IRequestRepository RequestRepository { get; }
-        IPhotoRepository PhotoRepository { get; }
         Task<bool> Complete();
         bool HasChange();
     }

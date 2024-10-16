@@ -38,12 +38,6 @@ CREATE TABLE Request (
     Checked BIT,
     CheckedDate DATETIME2(0),
     Description VARCHAR(300),
-);
-GO
-
-CREATE TABLE Photo (
-    PhotoId BIGINT IDENTITY(1,1) PRIMARY KEY,
-    RequestId BIGINT NOT NULL FOREIGN KEY REFERENCES Request(RequestId),
     PhotoURL VARCHAR(300) NOT NULL,
 );
 GO
