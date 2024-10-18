@@ -1,1 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg1: #f0f4f9;
+    --txt: rgb(11, 87, 208);
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: "Poppins";
+}
+
+body {
+    background-color: var(--bg1);
+}
+
+input:focus::placeholder {
+    color: transparent;
+}
+
+.login-layout {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    border-radius: 20px;
+    background-color: white;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.icon {
+    padding: 20px;
+}
+
+.icon-location {
+    max-width: 125px;
+}

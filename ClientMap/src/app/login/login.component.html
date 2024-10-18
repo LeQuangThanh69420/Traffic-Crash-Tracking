@@ -1,1 +1,14 @@
-<p>login works!</p>
+<div class="login-layout">
+    <div class="login-form">
+        <h2>Sign in</h2>
+
+        <input type="text" name="Username" placeholder="Username" [(ngModel)]="user.username">
+
+        <input type="text" name="Password" placeholder="Password" [(ngModel)]="user.password">
+
+        <button (click)="Login()">Login</button>
+    </div>
+    <div class="icon">
+        <img class="icon-location" src="/assets/marker/location.svg">
+    </div>
+</div>
