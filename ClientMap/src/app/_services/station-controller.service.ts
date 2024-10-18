@@ -19,7 +19,7 @@ export class StationControllerService {
   }
 
   Logout() {
-    window.localStorage.removeItem("user");
+    window.localStorage.removeItem("currentStation");
     this.router.navigate(['/login']);
     //stopHubConnection();
   }

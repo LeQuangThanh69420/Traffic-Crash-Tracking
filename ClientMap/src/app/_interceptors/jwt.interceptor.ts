@@ -13,11 +13,11 @@ export class JwtInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    let currentUser = JSON.parse(window.localStorage.getItem("user")!);
-    if(currentUser) {
+    let currentStation = JSON.parse(window.localStorage.getItem("currentStation")!);
+    if(currentStation) {
       request = request.clone({
         setHeaders: {
-          Authorization: `${currentUser.token}`
+          Authorization: `${currentStation.token}`
         }
       })
     }
