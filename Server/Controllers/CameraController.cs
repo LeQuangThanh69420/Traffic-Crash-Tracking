@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Data;
 using Server.Data.IRepositories;
@@ -35,6 +36,7 @@ namespace Server.Controllers
             }
         }
 
+        [Authorize(Policy = Policies.Station)]
         [HttpGet("GetCameras")]
         public async Task<ActionResult> GetCameras()
         {

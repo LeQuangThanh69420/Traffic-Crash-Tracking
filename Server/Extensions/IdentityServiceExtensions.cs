@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Server.Data;
 
 namespace Server.Extensions
 {
@@ -35,7 +36,7 @@ namespace Server.Extensions
 
             services.AddAuthorization(opt => 
             {
-                opt.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy(Policies.Station, policy => policy.RequireRole(Roles.Admin, Roles.Moderator, Roles.Member));
             });
 
             return services;

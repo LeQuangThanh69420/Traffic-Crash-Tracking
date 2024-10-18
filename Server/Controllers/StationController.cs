@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Server.Data;
 using Server.Data.DTOs;
 using Server.Data.IRepositories;
 using Server.Services;
@@ -43,6 +45,7 @@ namespace Server.Controllers
             }
         }
 
+        [Authorize(Policy = Policies.Station)]
         [HttpGet("GetStations")]
         public async Task<ActionResult> GetStations()
         {
