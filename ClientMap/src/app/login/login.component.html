@@ -1,14 +1,25 @@
-<div class="login-layout">
-    <div class="login-form">
-        <h2>Sign in</h2>
-
-        <input type="text" name="Username" placeholder="Username" [(ngModel)]="user.username">
-
-        <input type="text" name="Password" placeholder="Password" [(ngModel)]="user.password">
-
-        <button (click)="Login()">Login</button>
-    </div>
-    <div class="icon">
-        <img class="icon-location" src="/assets/marker/location.svg">
+<div style="display: flex; justify-content: center; margin-top: 150px;">
+    <div class="login-layout">
+        <div class="login-form">
+            <h1>Sign in</h1>
+            <div class="login-form-row">
+                <fieldset class="login-form-input-fs">
+                    <legend class="login-form-input-lg">Username</legend>
+                    <input class="login-form-input" type="text" name="Username" placeholder="Username" [(ngModel)]="currentStation.username">
+                </fieldset>
+            </div>
+            <div class="login-form-row">
+                <fieldset class="login-form-input-fs">
+                    <legend class="login-form-input-lg">Password</legend>
+                    <input class="login-form-input" type="text" name="Password" placeholder="Password" [(ngModel)]="currentStation.password">
+                </fieldset>
+            </div>
+            <div class="login-form-row">
+                <button class="login-btn" (click)="Login()">Login</button>
+            </div>
+        </div>
+        <div class="icon">
+            <img class="icon-location" src="/assets/marker/location.svg">
+        </div>
     </div>
 </div>

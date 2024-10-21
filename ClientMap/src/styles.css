@@ -3,7 +3,7 @@
 
 :root {
     --bg1: #f0f4f9;
-    --txt: rgb(11, 87, 208);
+    --pri: #0b57d0;
 }
 
 * {
@@ -22,7 +22,6 @@ input:focus::placeholder {
 }
 
 .login-layout {
-    position: absolute;
     display: flex;
     flex-direction: row;
     border-radius: 20px;
@@ -35,10 +34,67 @@ input:focus::placeholder {
     padding: 20px;
 }
 
+.login-form-row {
+    position: relative;
+    width: 250px;
+    height: 50px;
+}
+
+.login-form-input-fs {
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    padding-left: 10px;
+}
+
+.login-form-input-fs:focus-within {
+    border: 2px ridge var(--pri);
+    height: 48.2px;
+}
+
+.login-form-input-fs:focus-within .login-form-input-lg {
+    display: block;
+    color: var(--pri);
+}
+
+.login-form-input-lg {
+    font-size: 12px;
+    display: none;
+}
+
+.login-form-input {
+    position: absolute;
+    bottom: 2px;
+    width: 100%;
+    height: 31.2px;
+    border: none;
+    outline: none;
+    font-size: 20px;
+}
+
+.login-form-input::placeholder {
+    font-size: 20px;
+}
+
+.login-btn {
+    position: absolute;
+    bottom: 0;
+    color: white;
+    font-size: large;
+    background-color: var(--pri);
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    height: 40px;
+}
+
 .icon {
     padding: 20px;
 }
 
 .icon-location {
-    max-width: 125px;
+    max-width: 175px;
 }
