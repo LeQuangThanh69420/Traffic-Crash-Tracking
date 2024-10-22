@@ -11,15 +11,25 @@ import { Router } from '@angular/router';
 })
 export class StationControllerService {
   baseUrl = environment.apiUrl;
+  currentUser: any;
 
   constructor(private http: HttpClient, private router: Router) { }
+
+  SetCurrentUser(user: StationLoginOutputDTO) {
+    this.currentUser = user;
+    window.localStorage.setItem("currentUser", JSON.stringify(user));
+  }
+
+  GetCurrentUser() {
+    this.currentUser = JSON.parse(window.localStorage.getItem("currentUser")!);
+  }
 
   Login(input: StationLoginInputDTO) {
     return this.http.post<StationLoginOutputDTO>(this.baseUrl + "Station/Login", input);
   }
 
   Logout() {
-    window.localStorage.removeItem("currentStation");
+    window.localStorage.removeItem("currentUser");
     this.router.navigate(['/login']);
     //stopHubConnection();
   }

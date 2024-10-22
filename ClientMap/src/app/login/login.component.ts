@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  currentStation: StationLoginInputDTO = { username: "", password: ""};
+  currentUser: StationLoginInputDTO = { username: "", password: ""};
 
   constructor(private stationController: StationControllerService, private router: Router) { }
 
@@ -17,8 +17,8 @@ export class LoginComponent implements OnInit {
   }
 
   Login() {
-    this.stationController.Login(this.currentStation).subscribe(response => {
-        window.localStorage.setItem("currentStation", JSON.stringify(response));
+    this.stationController.Login(this.currentUser).subscribe(response => {
+        this.stationController.SetCurrentUser(response);
         this.router.navigate(['/main']);
       }, error => {
         console.log(error);

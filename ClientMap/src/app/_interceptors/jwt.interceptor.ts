@@ -6,18 +6,19 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { StationControllerService } from '../_services/station-controller.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor(private stationController: StationControllerService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    let currentStation = JSON.parse(window.localStorage.getItem("currentStation")!);
-    if(currentStation) {
+    let currentUser = this.stationController.currentUser;
+    if(currentUser) {
       request = request.clone({
         setHeaders: {
-          Authorization: `${currentStation.token}`
+          Authorization: `${currentUser.token}`
         }
       })
     }
