@@ -1,1 +1,20 @@
-<p>main works!</p>
+<div class="main-layout">
+    <div class="main-menu">
+        <div class="main-info white-layout">
+            <h2 class="one-line" [title]="stationController.currentUser.stationName">Info: {{stationController.currentUser.stationName}}</h2>
+            <p><b>Username:</b> {{stationController.currentUser.username}}</p>
+            <p><b>Role:</b> {{stationController.currentUser.role}}</p>
+            <p class="two-line" [title]="stationController.currentUser.address"><b>Address:</b> {{stationController.currentUser.address}}</p>
+            <div class="btn-group">
+                <button (click)="toMyLocation()" class="btn-to-mylocation"></button>
+                <button (click)="stationController.Logout()" class="btn-logout">Logout</button>
+            </div>
+        </div>
+        <div class="main-tab white-layout">
+            ggggggggg
+        </div>
+    </div>
+    <div class="main-map white-layout" id="map">
+
+    </div>
+</div>

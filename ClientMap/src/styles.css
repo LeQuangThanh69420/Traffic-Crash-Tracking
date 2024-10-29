@@ -26,6 +26,22 @@ button {
     border-radius: 8px;
 }
 
+.one-line {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* Giới hạn số dòng là 2 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.two-line {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Giới hạn số dòng là 2 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .white-layout {
     border-radius: 20px;
     background-color: white;
@@ -134,14 +150,6 @@ button {
     padding: 10px;
     width: 100%;
     height: 32%;
-}
-
-.two-line {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2; /* Giới hạn số dòng là 2 */
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .btn-group {
