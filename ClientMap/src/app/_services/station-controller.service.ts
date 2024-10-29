@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class StationControllerService {
   baseUrl = environment.apiUrl;
-  currentUser: any;
+  currentUser!: StationLoginOutputDTO;;
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -29,6 +29,7 @@ export class StationControllerService {
   }
 
   Logout() {
+    this.currentUser = null!;
     window.localStorage.removeItem("currentUser");
     this.router.navigate(['/login']);
     //stopHubConnection();

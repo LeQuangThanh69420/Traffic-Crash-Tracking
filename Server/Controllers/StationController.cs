@@ -34,7 +34,11 @@ namespace Server.Controllers
                     return Ok(new StationLoginOutputDTO() { 
                             Token = "Bearer " + token, 
                             StationName = station.StationName, 
-                            Role = station.Role 
+                            Username = station.Username,
+                            Role = station.Role, 
+                            Address = station.Address,
+                            Longitude = station.Location.Coordinate.X,
+                            Latitude = station.Location.Coordinate.Y,
                         } 
                     );
                 }
