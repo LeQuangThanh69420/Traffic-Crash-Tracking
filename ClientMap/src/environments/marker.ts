@@ -1,0 +1,60 @@
+import * as L from 'leaflet';
+
+export const markers = {
+    CameraOffline: L.icon({
+        iconUrl: '/assets/marker/Marker-Camera-Offline.svg',
+        iconSize: [38, 53],
+        iconAnchor: [19, 53],
+        shadowUrl: '/assets/marker/marker-shadow.png',
+        shadowSize: [41, 41],
+        shadowAnchor: [12, 41],
+    }),
+    CameraOnline: L.icon({
+        iconUrl: '/assets/marker/Marker-Camera-Online.svg',
+        iconSize: [38, 53],
+        iconAnchor: [19, 53],
+        shadowUrl: '/assets/marker/marker-shadow.png',
+        shadowSize: [41, 41],
+        shadowAnchor: [12, 41],
+    }),
+    CameraUnActive: L.icon({
+        iconUrl: '/assets/marker/Marker-Camera-UnActive.svg',
+        iconSize: [38, 53],
+        iconAnchor: [19, 53],
+        shadowUrl: '/assets/marker/marker-shadow.png',
+        shadowSize: [41, 41],
+        shadowAnchor: [12, 41],
+    }),
+    StationCurrent: L.icon({
+        iconUrl: '/assets/marker/Marker-Station-Current.svg',
+        iconSize: [38, 53],
+        iconAnchor: [19, 53],
+        shadowUrl: '/assets/marker/marker-shadow.png',
+        shadowSize: [41, 41],
+        shadowAnchor: [12, 41],
+    }),
+    StationOffline: L.icon({
+        iconUrl: '/assets/marker/Marker-Station-Offline.svg',
+        iconSize: [38, 53],
+        iconAnchor: [19, 53],
+        shadowUrl: '/assets/marker/marker-shadow.png',
+        shadowSize: [41, 41],
+        shadowAnchor: [12, 41],
+    }),
+    StationOnline: L.icon({
+        iconUrl: '/assets/marker/Marker-Station-Online.svg',
+        iconSize: [38, 53],
+        iconAnchor: [19, 53],
+        shadowUrl: '/assets/marker/marker-shadow.png',
+        shadowSize: [41, 41],
+        shadowAnchor: [12, 41],
+    }),
+    StationUnActive: L.icon({
+        iconUrl: '/assets/marker/Marker-Station-UnActive.svg',
+        iconSize: [38, 53],
+        iconAnchor: [19, 53],
+        shadowUrl: '/assets/marker/marker-shadow.png',
+        shadowSize: [41, 41],
+        shadowAnchor: [12, 41],
+    }),
+}

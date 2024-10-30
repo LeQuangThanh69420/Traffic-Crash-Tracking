@@ -26,6 +26,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     HttpClientModule,
     FormsModule,
     ToastrModule.forRoot({
+      timeOut: 2000,
       positionClass: 'toast-bottom-right',
     }),
     MatProgressSpinnerModule,

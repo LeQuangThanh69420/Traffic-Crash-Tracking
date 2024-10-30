@@ -6,12 +6,22 @@
             <p><b>Role:</b> {{stationController.currentUser.role}}</p>
             <p class="two-line" [title]="stationController.currentUser.address"><b>Address:</b> {{stationController.currentUser.address}}</p>
             <div class="btn-group">
-                <button (click)="toMyLocation()" class="btn-to-mylocation"></button>
+                <button (click)="addTog()" class="btn-addTog" [hidden]="stationController.currentUser.role != 'Admin' && stationController.currentUser.role != 'Moderator'">
+                    <img style="width: 28px;" src="/assets/plus.svg" alt="">
+                </button>
+                <button (click)="toMyLocation()" class="btn-toMyLocation"></button>
                 <button (click)="stationController.Logout()" class="btn-logout">Logout</button>
             </div>
         </div>
         <div class="main-tab white-layout">
-            ggggggggg
+            <div class="main-tabs">
+                <div class="main-tab-camera">Camera</div>
+                <div class="main-tab-station">Station</div>
+            </div>
+            <div class="main-list">
+                <div class="main-cameras">Camera</div>
+                <div class="main-stations">Station</div>
+            </div>
         </div>
     </div>
     <div class="main-map white-layout" id="map">
