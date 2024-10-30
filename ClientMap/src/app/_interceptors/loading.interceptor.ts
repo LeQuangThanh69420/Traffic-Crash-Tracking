@@ -14,11 +14,11 @@ export class LoadingInterceptor implements HttpInterceptor {
   constructor(private loading: LoadingService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    this.loading.isLoading.next(true)
+    this.loading.isLoading.next(true);
     return next.handle(request).pipe(
       delay(1000),
       finalize(() => {
-        this.loading.isLoading.next(false)
+        this.loading.isLoading.next(false);
       })
     );
   }
