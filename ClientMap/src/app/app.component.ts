@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StationControllerService } from './_services/station-controller.service';
+import { LoadingService } from './_services/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,7 @@ import { StationControllerService } from './_services/station-controller.service
 })
 export class AppComponent implements OnInit {
 
-  constructor(private stationController: StationControllerService) { }
+  constructor(private stationController: StationControllerService, public loading: LoadingService) { }
 
   ngOnInit(): void {
     this.stationController.GetCurrentUser();
