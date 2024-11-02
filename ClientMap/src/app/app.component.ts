@@ -9,7 +9,9 @@ import { LoadingService } from './_services/loading.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private stationController: StationControllerService, public loading: LoadingService) { }
+  constructor(
+    private stationController: StationControllerService, 
+    public loading: LoadingService) { }
 
   ngOnInit(): void {
     this.stationController.GetCurrentUser();

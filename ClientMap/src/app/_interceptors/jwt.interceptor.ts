@@ -11,7 +11,8 @@ import { StationControllerService } from '../_services/station-controller.servic
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
-  constructor(private stationController: StationControllerService) {}
+  constructor(
+    private stationController: StationControllerService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let currentUser = this.stationController.currentUser;

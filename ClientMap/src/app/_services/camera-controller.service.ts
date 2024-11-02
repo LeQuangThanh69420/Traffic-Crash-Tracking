@@ -9,7 +9,8 @@ import { CameraGetCamerasOutputDTO } from '../_DTOs/CameraGetCamerasOutputDTO';
 export class CameraControllerService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient) { }
 
   GetCameras() {
     return this.http.get<CameraGetCamerasOutputDTO[]>(this.baseUrl + "Camera/GetCameras");

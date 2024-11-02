@@ -7,7 +7,9 @@ import { StationControllerService } from '../_services/station-controller.servic
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router, private stationController: StationControllerService) {}
+  constructor(
+    private router: Router, 
+    private stationController: StationControllerService) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
