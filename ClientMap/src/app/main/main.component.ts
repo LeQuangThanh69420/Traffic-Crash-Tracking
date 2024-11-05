@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { markers } from 'src/environments/marker';
 import { CameraGetCamerasOutputDTO } from '../_DTOs/CameraGetCamerasOutputDTO';
 import { StationGetStationsOutputDTO } from '../_DTOs/StationGetStationsOutputDTO';
+import { PresenceService } from '../_services/presence.service';
 
 @Component({
   selector: 'app-main',
@@ -15,18 +16,34 @@ import { StationGetStationsOutputDTO } from '../_DTOs/StationGetStationsOutputDT
 })
 export class MainComponent implements OnInit {
 
-  constructor(public stationController: StationControllerService, 
+  constructor(
+    public stationController: StationControllerService, 
     private cameraController: CameraControllerService,
-    private toastr: ToastrService) { 
-    }
+    private toastr: ToastrService,
+    public presence: PresenceService) { }
 
   map: Map = null!;
   markers = markers;
+
+  tab: string = "Camera";
+  setTab(tab: string) {
+    if(this.tab == tab || (tab != "Camera" && tab != "Station")) {
+      return;
+    }
+    this.tab = tab;
+  }
+
+  Logout() {
+    this.presence.stopHubConnection();
+    this.stationController.Logout();
+  }
 
   stations: StationGetStationsOutputDTO[] = [];
   cameras: CameraGetCamerasOutputDTO[] = [];
 
   ngOnInit() {
+    this.presence.createHubConnection();
+
     this.map = L.map('map', { attributionControl:false })
     .on("click", (e) => {
 

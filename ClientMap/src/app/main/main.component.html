@@ -6,21 +6,55 @@
             <p><b>Role:</b> {{stationController.currentUser.role}}</p>
             <p class="two-line" [title]="stationController.currentUser.address"><b>Address:</b> {{stationController.currentUser.address}}</p>
             <div class="btn-group">
-                <button (click)="addTog()" class="btn-addTog" [hidden]="stationController.currentUser.role != 'Admin' && stationController.currentUser.role != 'Moderator'">
+                <button (click)="addTog()" class="btn-addTog" *ngIf="!(stationController.currentUser.role != 'Admin' && stationController.currentUser.role != 'Moderator')">
                     <img style="width: 28px;" src="/assets/plus.svg" alt="">
                 </button>
                 <button (click)="toMyLocation()" class="btn-toMyLocation"></button>
-                <button (click)="stationController.Logout()" class="btn-logout">Logout</button>
+                <button (click)="Logout()" class="btn-logout">Logout</button>
             </div>
         </div>
         <div class="main-tab white-layout">
             <div class="main-tabs">
-                <div class="main-tab-camera">Camera</div>
-                <div class="main-tab-station">Station</div>
+                <div class="main-tab-camera" [ngClass]="{'main-tab-active': tab === 'Camera'}" (click)="setTab('Camera')">Camera</div>
+                <div class="main-tab-station" [ngClass]="{'main-tab-active': tab === 'Station'}" (click)="setTab('Station')">Station</div>
             </div>
             <div class="main-list">
-                <div class="main-cameras">Camera</div>
-                <div class="main-stations">Station</div>
+                <div class="main-cameras" *ngIf="tab == 'Camera'">
+                    <ul>
+                        <li *ngFor="let camera of cameras">
+                            <span class="status"
+                                [ngClass]="{
+                                    'status-offline' : true,
+                                    'status-unactive' : camera.isActive === false,
+                                }">
+                            </span>
+                            <p>{{camera.cameraName}}</p>
+                            <div style="position: absolute; height: 28px; right: 0;">
+                                <button (click)="toLocation(camera.latitude, camera.longitude)" class="btn-toLocation"></button>
+                                <button class="btn-edit"></button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="main-stations" *ngIf="tab == 'Station'">
+                    <ul>
+                        <li *ngFor="let station of stations">
+                            <span class="status"
+                                [ngClass]="{
+                                    'status-offline' : true,
+                                    'status-online' : presence.onlineStations.includes(station.stationName),
+                                    'status-current' : station.stationName == stationController.currentUser.stationName,
+                                    'status-unactive' : station.isActive === false,
+                                }">
+                            </span>
+                            <p>{{station.stationName}}</p>
+                            <div style="position: absolute; height: 28px; right: 0;">
+                                <button (click)="toLocation(station.latitude, station.longitude)" class="btn-toLocation"></button>
+                                <button class="btn-edit"></button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

@@ -5,15 +5,18 @@ import { StationGetStationsOutputDTO } from '../_DTOs/StationGetStationsOutputDT
 import { StationLoginInputDTO } from '../_DTOs/StationLoginInputDTO';
 import { StationLoginOutputDTO } from '../_DTOs/StationLoginOutputDTO';
 import { Router } from '@angular/router';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StationControllerService {
   baseUrl = environment.apiUrl;
-  currentUser!: StationLoginOutputDTO;;
+  currentUser: StationLoginOutputDTO;;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(
+    private http: HttpClient, 
+    private router: Router) { }
 
   SetCurrentUser(user: StationLoginOutputDTO) {
     this.currentUser = user;
@@ -32,7 +35,6 @@ export class StationControllerService {
     this.currentUser = null!;
     window.localStorage.removeItem("currentUser");
     this.router.navigate(['/login']);
-    //stopHubConnection();
   }
 
   GetStations() {
