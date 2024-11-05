@@ -57,5 +57,13 @@ namespace Server.SignalR
             }
             await base.OnDisconnectedAsync(exception);
         }
+
+        public async Task SendFrame(string frameBase64)
+        {
+            await Clients.Others.SendAsync(Channels.ReceiveFrameBase64, new { 
+                cameraName = Context.User.GetName(),
+                frameBase64 = frameBase64
+            });
+        }
     }
 }

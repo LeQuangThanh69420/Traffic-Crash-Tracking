@@ -25,6 +25,7 @@
                             <span class="status"
                                 [ngClass]="{
                                     'status-offline' : true,
+                                    'status-online' : presence.onlineCameras.has(camera.cameraName),
                                     'status-unactive' : camera.isActive === false,
                                 }">
                             </span>
