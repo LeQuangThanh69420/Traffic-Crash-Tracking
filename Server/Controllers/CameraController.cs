@@ -27,7 +27,7 @@ namespace Server.Controllers
                 }
                 else {
                     var token = _token.CreateToken(camera.CameraId, camera.CameraName, Roles.Camera);
-                    return Ok(new { token = "Bearer " + token } );
+                    return Ok(new { token = token } );
                 }
             }
             catch (Exception ex) 

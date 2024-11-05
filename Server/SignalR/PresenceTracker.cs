@@ -63,7 +63,7 @@ namespace Server.SignalR
             {
                 if(OnlineCameras.ContainsKey(name)) {
                     if(OnlineCameras[name][0] == connectionId) {
-                        OnlineStations.Remove(name);
+                        OnlineCameras.Remove(name);
                         success = true;
                     }
                 }

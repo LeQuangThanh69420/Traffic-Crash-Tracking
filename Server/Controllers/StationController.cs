@@ -32,7 +32,7 @@ namespace Server.Controllers
                 else {
                     var token = _token.CreateToken(station.StationId, station.StationName, station.Role);
                     return Ok(new StationLoginOutputDTO() { 
-                            Token = "Bearer " + token, 
+                            Token = token, 
                             StationName = station.StationName, 
                             Username = station.Username,
                             Role = station.Role, 
