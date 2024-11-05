@@ -3,7 +3,7 @@ namespace Server.SignalR
     public class PresenceTracker
     {
         private static readonly Dictionary<string, string> OnlineStations = new Dictionary<string, string>();
-        private static readonly Dictionary<string, string[]> OnlineCameras = new Dictionary<string, string[]>();
+        private static readonly Dictionary<string, string> OnlineCameras = new Dictionary<string, string>();
 
         public Task<bool> StationConnected(string name, string connectionId)
         {
@@ -49,7 +49,7 @@ namespace Server.SignalR
             lock(OnlineCameras) 
             {
                 if(!OnlineCameras.ContainsKey(name)) {
-                    OnlineCameras.Add(name, [connectionId, ""]);
+                    OnlineCameras.Add(name, connectionId);
                     success = true;
                 }
             }
@@ -62,7 +62,7 @@ namespace Server.SignalR
             lock(OnlineCameras) 
             {
                 if(OnlineCameras.ContainsKey(name)) {
-                    if(OnlineCameras[name][0] == connectionId) {
+                    if(OnlineCameras[name] == connectionId) {
                         OnlineCameras.Remove(name);
                         success = true;
                     }
@@ -71,15 +71,12 @@ namespace Server.SignalR
             return Task.FromResult(success);
         }
 
-        public Task<Dictionary<string, string>> GetOnlineCameras() 
+        public Task<string[]> GetOnlineCameras() 
         {
-            Dictionary<string, string> onlineCameras;
+            string[] onlineCameras;
             lock(OnlineCameras) 
             {
-                onlineCameras = OnlineCameras
-                    .Where(k => k.Value.Length > 1)
-                    .OrderBy(k => k.Key)
-                    .ToDictionary(k => k.Key, k => k.Value[1]);          
+                onlineCameras = OnlineCameras.OrderBy(k => k.Key).Select(k => k.Key).ToArray();          
             }
             return Task.FromResult(onlineCameras);
         }
