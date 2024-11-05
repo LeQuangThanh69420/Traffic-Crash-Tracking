@@ -30,7 +30,7 @@ namespace Server.Controllers
                     return NotFound(new { message = "Your account's unactive" } );
                 }
                 else {
-                    var token = _token.CreateToken(station.StationId, station.Username, station.Role);
+                    var token = _token.CreateToken(station.StationId, station.StationName, station.Role);
                     return Ok(new StationLoginOutputDTO() { 
                             Token = "Bearer " + token, 
                             StationName = station.StationName, 

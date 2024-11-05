@@ -5,6 +5,7 @@ using Server.Data.IRepositories;
 using Server.Data.Repositories;
 using Server.Helpers;
 using Server.Services;
+using Server.SignalR;
 
 namespace Server.Extensions
 {
@@ -39,6 +40,7 @@ namespace Server.Extensions
             });
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<PresenceTracker>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>
             {
