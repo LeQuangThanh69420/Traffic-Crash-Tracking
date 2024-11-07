@@ -12,12 +12,16 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CameraDetailModalComponent } from './_modals/camera-detail-modal/camera-detail-modal.component';
+import { StationDetailModalComponent } from './_modals/station-detail-modal/station-detail-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    MainComponent
+    MainComponent,
+    CameraDetailModalComponent,
+    StationDetailModalComponent
   ],
   imports: [
     BrowserModule,

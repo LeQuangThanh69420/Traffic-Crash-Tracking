@@ -344,6 +344,7 @@ circle {
 }
 
 .main-tab-camera, .main-tab-station {
+    cursor: pointer;
     border-radius: 8px 8px 0px 0px;
     border-bottom: none;
 }
