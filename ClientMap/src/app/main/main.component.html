@@ -9,7 +9,7 @@
                 <button (click)="addTog()" class="btn-addTog" *ngIf="!(stationController.currentUser.role != 'Admin' && stationController.currentUser.role != 'Moderator')">
                     <img style="width: 28px;" src="/assets/plus.svg" alt="">
                 </button>
-                <button (click)="toMyLocation()" class="btn-toMyLocation"></button>
+                <button (click)="toLocation(stationController.currentUser.latitude, stationController.currentUser.longitude)" class="btn-toMyLocation"></button>
                 <button (click)="Logout()" class="btn-logout">Logout</button>
             </div>
         </div>

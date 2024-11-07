@@ -65,6 +65,15 @@ circle {
     z-index: 9999;
 }
 
+.leaflet-marker-icon[src="/assets/marker/Marker-Camera-Online.svg"],
+.leaflet-marker-icon[src="/assets/marker/Marker-Camera-UnActive.svg"],
+.leaflet-marker-icon[src="/assets/marker/Marker-Station-Current.svg"],
+.leaflet-marker-icon[src="/assets/marker/Marker-Station-Online.svg"],
+.leaflet-marker-icon[src="/assets/marker/Marker-Station-UnActive.svg"]
+{
+    animation: fa-blink 1.5s linear infinite;
+}
+
 @keyframes fa-blink {
     0% {opacity: 1;}
     50% {opacity: 0.5;}
@@ -102,7 +111,6 @@ circle {
 .status-online {
     background-color: var(--online);
     animation: fa-blink 1.5s linear infinite;
-
 }
 
 .status-current {

@@ -3,6 +3,8 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { StationControllerService } from './station-controller.service';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,8 @@ export class PresenceService {
   private hubConnection: HubConnection;
 
   onlineStations: string[];
+  onlineCameras: Map<string, string> = new Map();
+  markerUpdated = new Subject<void>();
 
   constructor(
     private stationController: StationControllerService, 
@@ -21,7 +25,7 @@ export class PresenceService {
   createHubConnection() {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.hubUrl + "presence", {
-        accessTokenFactory: () => this.stationController.currentUser.token.replace("Bearer ", "")
+        accessTokenFactory: () => this.stationController.currentUser.token
       })
       .withAutomaticReconnect()
       .build();
@@ -32,19 +36,40 @@ export class PresenceService {
 
     this.hubConnection.onclose(() => {
       this.stationController.Logout();
-      this.toastr.error("Your account's logged in on another device");
     });
 
     this.hubConnection.on("StationConnected", (stationName: string) => {
       this.onlineStations.push(stationName);
+      this.markerUpdated.next();
     });
     
     this.hubConnection.on("StationDisconnected", (stationName: string) => {
       this.onlineStations = this.onlineStations.filter(item => item !== stationName);
+      this.markerUpdated.next();
     });
 
     this.hubConnection.on("GetOnlineStations", (stations: string[]) => {
       this.onlineStations = stations;
+    });
+
+    this.hubConnection.on("CamerasConnected", (cameraName: string) => {
+      this.onlineCameras.set(cameraName, "");
+      this.markerUpdated.next();
+    });
+
+    this.hubConnection.on("CamerasDisconnected", (cameraName: string) => {
+      this.onlineCameras.delete(cameraName);
+      this.markerUpdated.next();
+    });
+
+    this.hubConnection.on("GetOnlineCameras", (cameras: []) => {
+      cameras.forEach(camera => {
+        this.onlineCameras.set(camera, "");
+      });
+    });
+
+    this.hubConnection.on("ReceiveFrameBase64", (camera: any) => {
+      this.onlineCameras.set(camera.cameraName, camera.frameBase64);
     });
   }
 

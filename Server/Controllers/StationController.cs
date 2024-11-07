@@ -4,6 +4,7 @@ using Server.Data;
 using Server.Data.DTOs;
 using Server.Data.IRepositories;
 using Server.Services;
+using Server.SignalR;
 
 namespace Server.Controllers
 {
@@ -11,10 +12,12 @@ namespace Server.Controllers
     {
         private readonly IUnitOfWork _uow;
         private readonly ITokenService _token;
-        public StationController(IUnitOfWork uow, ITokenService token)
+        private readonly PresenceTracker _tracker;
+        public StationController(IUnitOfWork uow, ITokenService token, PresenceTracker tracker)
         {
             _uow = uow;
             _token = token;
+            _tracker = tracker;
         }
 
         [HttpPost("Login")]
@@ -28,6 +31,9 @@ namespace Server.Controllers
                 }
                 if (station.IsActive == false) {
                     return NotFound(new { message = "Your account's unactive" } );
+                }
+                if ((await _tracker.GetOnlineStations()).Contains(station.StationName)) {
+                    return NotFound(new { message = "Your account's logged in another device" } );
                 }
                 else {
                     var token = _token.CreateToken(station.StationId, station.StationName, station.Role);
