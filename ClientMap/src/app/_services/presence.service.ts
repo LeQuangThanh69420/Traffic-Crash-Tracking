@@ -62,7 +62,7 @@ export class PresenceService {
       this.markerUpdated.next();
     });
 
-    this.hubConnection.on("GetOnlineCameras", (cameras: []) => {
+    this.hubConnection.on("GetOnlineCameras", (cameras: string[]) => {
       cameras.forEach(camera => {
         this.onlineCameras.set(camera, "");
       });

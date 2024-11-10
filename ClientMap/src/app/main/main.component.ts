@@ -30,48 +30,9 @@ export class MainComponent implements OnInit {
     public stationController: StationControllerService,
     private cameraController: CameraControllerService,
     private toastr: ToastrService,
-    public presence: PresenceService,) { }
+    public presence: PresenceService) { }
 
-  GetStations() {
-    this.stationController.GetStations().subscribe(response => {
-      this.stations = response;
-      this.loadStationMarker();
-    }, error => {
-      this.toastr.error(error.error.message);
-    });
-  }
-
-  GetCameras() {
-    this.cameraController.GetCameras().subscribe(response => {
-      this.cameras = response;
-      this.loadCameraMarker();
-    }, error => {
-      this.toastr.error(error.error.message);
-    });
-  }
-
-  ngOnInit() {
-    this.presence.createHubConnection();
-    this.loadMap();
-
-    setTimeout(() => {
-      this.GetStations();
-      this.GetCameras();
-    }, 0)
-
-    this.markerUpdate = this.presence.markerUpdated.subscribe(() => {
-      this.stationMarkers.forEach((v, k) => {
-        this.map.removeLayer(v);
-      });
-      this.cameraMarkers.forEach((v, k) => {
-        this.map.removeLayer(v);
-      });
-      this.loadStationMarker();
-      this.loadCameraMarker();
-    });
-  }
-
-  loadMap() {
+  LoadMap() {
     this.map = L.map('map', { attributionControl: false })
       .setView([this.stationController.currentUser.latitude, this.stationController.currentUser.longitude], 14)
       .on("click", (e) => {
@@ -81,7 +42,7 @@ export class MainComponent implements OnInit {
     }).addTo(this.map);
   }
 
-  loadStationMarker() {
+  LoadStationMarker() {
     this.stations.forEach(station => {
       var icon;
       if (station.stationName == this.stationController.currentUser.stationName) {
@@ -100,14 +61,17 @@ export class MainComponent implements OnInit {
           }
         }
       }
-      this.stationMarkers.set(station.stationName, L.marker([station.latitude, station.longitude], { icon: icon }));
+      this.stationMarkers.set(station.stationName, 
+        L.marker([station.latitude, station.longitude], { icon: icon })
+        .on('click', (e) => {
+        }));
     });
     this.stationMarkers.forEach((v, k) => {
       this.map.addLayer(v);
     });
   }
 
-  loadCameraMarker() {
+  LoadCameraMarker() {
     this.cameras.forEach(camera => {
       var icon;
       if (this.presence.onlineCameras.has(camera.cameraName)) {
@@ -121,11 +85,58 @@ export class MainComponent implements OnInit {
           icon = markers.CameraOffline;
         }
       }
-      this.cameraMarkers.set(camera.cameraName, L.marker([camera.latitude, camera.longitude], { icon: icon }));
+      this.cameraMarkers.set(camera.cameraName, 
+        L.marker([camera.latitude, camera.longitude], { icon: icon })
+        .on("click", (e) => {
+        }));
     });
     this.cameraMarkers.forEach((v, k) => {
       this.map.addLayer(v);
     });
+  }
+
+  MarkerUpdate() {
+    this.markerUpdate = this.presence.markerUpdated.subscribe(() => {
+      this.stationMarkers.forEach((v, k) => {
+        this.map.removeLayer(v);
+      });
+      this.cameraMarkers.forEach((v, k) => {
+        this.map.removeLayer(v);
+      });
+      this.LoadStationMarker();
+      this.LoadCameraMarker();
+    });
+  }
+
+  GetStations() {
+    this.stationController.GetStations().subscribe(response => {
+      this.stations = response;
+      this.LoadStationMarker();
+    }, error => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
+  GetCameras() {
+    this.cameraController.GetCameras().subscribe(response => {
+      this.cameras = response;
+      this.LoadCameraMarker();
+    }, error => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
+  ngOnInit() {
+    this.presence.createHubConnection();
+    this.LoadMap();
+
+    this.MarkerUpdate();
+
+    setTimeout(() => {
+      this.GetStations();
+      this.GetCameras();
+    }, 0)
+
   }
 
   addTog() {
