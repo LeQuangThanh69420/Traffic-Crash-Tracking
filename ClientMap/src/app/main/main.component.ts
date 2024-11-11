@@ -18,10 +18,10 @@ import { Subscription } from 'rxjs';
 export class MainComponent implements OnInit {
   map: LeafletMap = null!;
   markers = markers;
-
+  stationMarkerUpdate: Subscription;
+  cameraMarkerUpdated: Subscription;
   stationMarkers: Map<string, L.Marker<any>> = new Map();
   cameraMarkers: Map<string, L.Marker<any>> = new Map();
-  markerUpdate: Subscription;
 
   stations: StationGetStationsOutputDTO[] = [];
   cameras: CameraGetCamerasOutputDTO[] = [];
@@ -44,23 +44,7 @@ export class MainComponent implements OnInit {
 
   LoadStationMarker() {
     this.stations.forEach(station => {
-      var icon;
-      if (station.stationName == this.stationController.currentUser.stationName) {
-        icon = markers.StationCurrent;
-      }
-      else {
-        if (this.presence.onlineStations.includes(station.stationName)) {
-          icon = markers.StationOnline;
-        }
-        else {
-          if (station.isActive === false) {
-            icon = markers.StationUnActive;
-          }
-          else {
-            icon = markers.StationOffline;
-          }
-        }
-      }
+      var icon = this.GetStationMarker(station);
       this.stationMarkers.set(station.stationName, 
         L.marker([station.latitude, station.longitude], { icon: icon })
         .on('click', (e) => {
@@ -71,20 +55,28 @@ export class MainComponent implements OnInit {
     });
   }
 
-  LoadCameraMarker() {
-    this.cameras.forEach(camera => {
-      var icon;
-      if (this.presence.onlineCameras.has(camera.cameraName)) {
-        icon = markers.CameraOnline;
+  GetStationMarker(station: any) {
+    if (station.stationName == this.stationController.currentUser.stationName) {
+      return markers.StationCurrent;
+    }
+    else {
+      if (this.presence.onlineStations.includes(station.stationName)) {
+        return markers.StationOnline;
       }
       else {
-        if (camera.isActive === false) {
-          icon = markers.CameraUnActive;
+        if (station.isActive === false) {
+          return markers.StationUnActive;
         }
         else {
-          icon = markers.CameraOffline;
+          return markers.StationOffline;
         }
       }
+    }
+  }
+
+  LoadCameraMarker() {
+    this.cameras.forEach(camera => {
+      var icon = this.GetCameraMarker(camera);
       this.cameraMarkers.set(camera.cameraName, 
         L.marker([camera.latitude, camera.longitude], { icon: icon })
         .on("click", (e) => {
@@ -95,15 +87,31 @@ export class MainComponent implements OnInit {
     });
   }
 
+  GetCameraMarker(camera: any) {
+    if (this.presence.onlineCameras.has(camera.cameraName)) {
+      return markers.CameraOnline;
+    }
+    else {
+      if (camera.isActive === false) {
+        return markers.CameraUnActive;
+      }
+      else {
+        return markers.CameraOffline;
+      }
+    }
+  }
+
   MarkerUpdate() {
-    this.markerUpdate = this.presence.markerUpdated.subscribe(() => {
+    this.stationMarkerUpdate = this.presence.stationMarkerUpdated.subscribe(() => {
       this.stationMarkers.forEach((v, k) => {
         this.map.removeLayer(v);
       });
+      this.LoadStationMarker();
+    });
+    this.cameraMarkerUpdated = this.presence.cameraMarkerUpdated.subscribe(() => {
       this.cameraMarkers.forEach((v, k) => {
         this.map.removeLayer(v);
       });
-      this.LoadStationMarker();
       this.LoadCameraMarker();
     });
   }
@@ -127,11 +135,9 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.presence.createHubConnection();
     this.LoadMap();
-
     this.MarkerUpdate();
-
+    this.presence.createHubConnection();
     setTimeout(() => {
       this.GetStations();
       this.GetCameras();

@@ -31,8 +31,8 @@
                             </span>
                             <p>{{camera.cameraName}}</p>
                             <div style="position: absolute; height: 28px; right: 0;">
-                                <button (click)="toLocation(camera.latitude, camera.longitude)" class="btn-toLocation"></button>
                                 <button class="btn-edit" *ngIf="!(stationController.currentUser.role != 'Admin' && stationController.currentUser.role != 'Moderator')"></button>
+                                <button (click)="toLocation(camera.latitude, camera.longitude)" class="btn-toLocation"></button>
                             </div>
                         </li>
                     </ul>
@@ -50,8 +50,8 @@
                             </span>
                             <p>{{station.stationName}}</p>
                             <div style="position: absolute; height: 28px; right: 0;">
-                                <button (click)="toLocation(station.latitude, station.longitude)" class="btn-toLocation"></button>
                                 <button class="btn-edit" *ngIf="!(stationController.currentUser.role != 'Admin' && stationController.currentUser.role != 'Moderator')"></button>
+                                <button (click)="toLocation(station.latitude, station.longitude)" class="btn-toLocation"></button>
                             </div>
                         </li>
                     </ul>

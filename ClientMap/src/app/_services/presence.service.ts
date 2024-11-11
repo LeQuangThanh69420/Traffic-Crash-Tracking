@@ -16,7 +16,8 @@ export class PresenceService {
 
   onlineStations: string[];
   onlineCameras: Map<string, string> = new Map();
-  markerUpdated = new Subject<void>();
+  stationMarkerUpdated = new Subject<void>();
+  cameraMarkerUpdated = new Subject<void>();
 
   constructor(
     private stationController: StationControllerService, 
@@ -40,12 +41,12 @@ export class PresenceService {
 
     this.hubConnection.on("StationConnected", (stationName: string) => {
       this.onlineStations.push(stationName);
-      this.markerUpdated.next();
+      this.stationMarkerUpdated.next();
     });
     
     this.hubConnection.on("StationDisconnected", (stationName: string) => {
       this.onlineStations = this.onlineStations.filter(item => item !== stationName);
-      this.markerUpdated.next();
+      this.stationMarkerUpdated.next();
     });
 
     this.hubConnection.on("GetOnlineStations", (stations: string[]) => {
@@ -54,12 +55,12 @@ export class PresenceService {
 
     this.hubConnection.on("CamerasConnected", (cameraName: string) => {
       this.onlineCameras.set(cameraName, "");
-      this.markerUpdated.next();
+      this.cameraMarkerUpdated.next();
     });
 
     this.hubConnection.on("CamerasDisconnected", (cameraName: string) => {
       this.onlineCameras.delete(cameraName);
-      this.markerUpdated.next();
+      this.cameraMarkerUpdated.next();
     });
 
     this.hubConnection.on("GetOnlineCameras", (cameras: string[]) => {
