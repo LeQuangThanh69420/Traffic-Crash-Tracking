@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PresenceService } from 'src/app/_services/presence.service';
+import { CameraDetailModalService } from '../camera-detail-modal.service';
 
 @Component({
   selector: 'app-camera-detail-modal',
@@ -9,6 +10,7 @@ import { PresenceService } from 'src/app/_services/presence.service';
 export class CameraDetailModalComponent implements OnInit, OnDestroy{
 
   constructor(
+    public cameraDetail: CameraDetailModalService,
     public presence: PresenceService) { }
 
   ngOnInit() {

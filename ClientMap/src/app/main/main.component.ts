@@ -1,14 +1,16 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { StationControllerService } from '../_services/station-controller.service';
-import { CameraControllerService } from '../_services/camera-controller.service';
+import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { Map as LeafletMap } from 'leaflet';
 import { ToastrService } from 'ngx-toastr';
 import { markers } from 'src/environments/marker';
-import { CameraGetCamerasOutputDTO } from '../_DTOs/CameraGetCamerasOutputDTO';
-import { StationGetStationsOutputDTO } from '../_DTOs/StationGetStationsOutputDTO';
 import { PresenceService } from '../_services/presence.service';
 import { Subscription } from 'rxjs';
+import { CameraGetCamerasOutputDTO } from '../_DTOs/CameraGetCamerasOutputDTO';
+import { StationGetStationsOutputDTO } from '../_DTOs/StationGetStationsOutputDTO';
+import { CameraControllerService } from '../_services/camera-controller.service';
+import { StationControllerService } from '../_services/station-controller.service';
+import { CameraDetailModalService } from '../_modals/camera-detail-modal.service';
+import { StationDetailModalService } from '../_modals/station-detail-modal.service';
 
 @Component({
   selector: 'app-main',
@@ -30,7 +32,9 @@ export class MainComponent implements OnInit {
     public stationController: StationControllerService,
     private cameraController: CameraControllerService,
     private toastr: ToastrService,
-    public presence: PresenceService) { }
+    public presence: PresenceService,
+    public cameraDetail: CameraDetailModalService,
+    public stationDetail: StationDetailModalService) { }
 
   LoadMap() {
     this.map = L.map('map', { attributionControl: false })
@@ -48,6 +52,7 @@ export class MainComponent implements OnInit {
       this.stationMarkers.set(station.stationName, 
         L.marker([station.latitude, station.longitude], { icon: icon })
         .on('click', (e) => {
+          this.stationDetail.Open();
         }));
     });
     this.stationMarkers.forEach((v, k) => {
@@ -80,6 +85,7 @@ export class MainComponent implements OnInit {
       this.cameraMarkers.set(camera.cameraName, 
         L.marker([camera.latitude, camera.longitude], { icon: icon })
         .on("click", (e) => {
+          this.cameraDetail.Open();
         }));
     });
     this.cameraMarkers.forEach((v, k) => {

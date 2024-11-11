@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PresenceService } from 'src/app/_services/presence.service';
+import { StationDetailModalService } from '../station-detail-modal.service';
 
 @Component({
   selector: 'app-station-detail-modal',
@@ -9,6 +10,7 @@ import { PresenceService } from 'src/app/_services/presence.service';
 export class StationDetailModalComponent implements OnInit, OnDestroy{
 
   constructor(
+    public stationDetail: StationDetailModalService,
     public presence: PresenceService) { }
 
   ngOnInit() {
