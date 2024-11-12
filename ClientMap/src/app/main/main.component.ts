@@ -38,7 +38,7 @@ export class MainComponent implements OnInit {
 
   LoadMap() {
     this.map = L.map('map', { attributionControl: false })
-      .setView([this.stationController.currentUser.latitude, this.stationController.currentUser.longitude], 14)
+      .setView([this.stationController.currentUser.latitude, this.stationController.currentUser.longitude], 15)
       .on("click", (e) => {
       })
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -52,7 +52,7 @@ export class MainComponent implements OnInit {
       this.stationMarkers.set(station.stationName, 
         L.marker([station.latitude, station.longitude], { icon: icon })
         .on('click', (e) => {
-          this.stationDetail.Open();
+          this.stationDetail.Open(station);
         }));
     });
     this.stationMarkers.forEach((v, k) => {
@@ -85,7 +85,7 @@ export class MainComponent implements OnInit {
       this.cameraMarkers.set(camera.cameraName, 
         L.marker([camera.latitude, camera.longitude], { icon: icon })
         .on("click", (e) => {
-          this.cameraDetail.Open();
+          this.cameraDetail.Open(camera);
         }));
     });
     this.cameraMarkers.forEach((v, k) => {
@@ -169,6 +169,6 @@ export class MainComponent implements OnInit {
   }
 
   toLocation(latitude: number, longitude: number) {
-    this.map.setView([latitude, longitude], 14);
+    this.map.setView([latitude, longitude], 15);
   }
 }

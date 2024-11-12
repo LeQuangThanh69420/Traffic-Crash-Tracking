@@ -7,12 +7,15 @@ import { BehaviorSubject } from 'rxjs';
 export class CameraDetailModalService {
 
   public isOpen: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  input: any;
 
-  Open() {
+  Open(input: any) {
+    this.input = input;
     this.isOpen.next(true);
   }
 
   Close() {
+    this.input = null;
     this.isOpen.next(false);
   }
 

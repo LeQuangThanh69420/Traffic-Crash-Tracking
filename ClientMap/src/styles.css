@@ -65,7 +65,7 @@ circle {
     z-index: 9999;
 }
 
-.modal-layout {
+.modal-bg {
     position: absolute;
     margin: 0;
     top: 0;
@@ -76,6 +76,22 @@ circle {
     align-items: center;
     justify-content: center;
     z-index: 9998;
+}
+
+.modal-layout {
+    display: flex;
+    flex-direction: row;
+}
+
+.modal-info {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.modal-camera-img {
+    width: 640px;
+    height: 360px;
 }
 
 .leaflet-marker-icon[src="/assets/marker/Marker-Camera-Online.svg"],

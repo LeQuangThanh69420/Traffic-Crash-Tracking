@@ -6,7 +6,7 @@
             <p><b>Role:</b> {{stationController.currentUser.role}}</p>
             <p class="two-line" [title]="stationController.currentUser.address"><b>Address:</b> {{stationController.currentUser.address}}</p>
             <div class="btn-group">
-                <button (click)="addTog()" class="btn-addTog" *ngIf="!(stationController.currentUser.role != 'Admin' && stationController.currentUser.role != 'Moderator')">
+                <button (click)="addTog()" class="btn-addTog" *ngIf="!(stationController.currentUser.role != 'Admin')">
                     <img style="width: 28px;" src="/assets/plus.svg" alt="">
                 </button>
                 <button (click)="toLocation(stationController.currentUser.latitude, stationController.currentUser.longitude)" class="btn-toMyLocation"></button>
@@ -31,7 +31,7 @@
                             </span>
                             <p>{{camera.cameraName}}</p>
                             <div style="position: absolute; height: 28px; right: 0;">
-                                <button class="btn-edit" *ngIf="!(stationController.currentUser.role != 'Admin' && stationController.currentUser.role != 'Moderator')"></button>
+                                <button class="btn-edit" *ngIf="!(stationController.currentUser.role != 'Admin')"></button>
                                 <button (click)="toLocation(camera.latitude, camera.longitude)" class="btn-toLocation"></button>
                             </div>
                         </li>
@@ -50,7 +50,7 @@
                             </span>
                             <p>{{station.stationName}}</p>
                             <div style="position: absolute; height: 28px; right: 0;">
-                                <button class="btn-edit" *ngIf="!(stationController.currentUser.role != 'Admin' && stationController.currentUser.role != 'Moderator')"></button>
+                                <button class="btn-edit" *ngIf="!(stationController.currentUser.role != 'Admin')"></button>
                                 <button (click)="toLocation(station.latitude, station.longitude)" class="btn-toLocation"></button>
                             </div>
                         </li>
