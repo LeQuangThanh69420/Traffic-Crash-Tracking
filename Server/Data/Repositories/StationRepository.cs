@@ -19,6 +19,12 @@ namespace Server.Data.Repositories
             return station;
         }
 
+        public async Task<Station?> GetStationByName(string username)
+        {
+            var station = _context.Station.SingleOrDefault(s => s.Username == username);
+            return station;
+        }
+
         public async Task<List<StationGetStationsOutputDTO>> GetStations()
         {
             return await _context.Station

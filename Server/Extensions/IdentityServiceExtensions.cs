@@ -36,7 +36,8 @@ namespace Server.Extensions
 
             services.AddAuthorization(opt => 
             {
-                opt.AddPolicy(Policies.Station, policy => policy.RequireRole(Roles.Admin, Roles.Moderator, Roles.Member));
+                opt.AddPolicy(Policies.Station, policy => policy.RequireRole(Roles.Admin, Roles.Member));
+                opt.AddPolicy(Policies.Admin, policy => policy.RequireRole(Roles.Admin));
             });
 
             return services;
