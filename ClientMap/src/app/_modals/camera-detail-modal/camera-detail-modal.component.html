@@ -1,4 +1,14 @@
-<div class="modal-layout">
-    <h1>Camera</h1>
-    <button (click)="cameraDetail.Close()">Close</button>
+<div class="modal-bg">
+    <div class="modal-layout white-layout">
+        <div class="modal-info">
+            <h1>ID: {{cameraDetail.input.cameraId}}</h1>
+            <h1>Name: {{cameraDetail.input.cameraName}}</h1>
+            <button class="modal-btn" (click)="cameraDetail.Close()">Close</button>
+        </div>
+        <div class="modal-camera-img">
+            <img class="modal-camera-img" [src]="presence.onlineCameras.get(cameraDetail.input.cameraName) 
+                ? 'data:image/png;base64,' + presence.onlineCameras.get(cameraDetail.input.cameraName) 
+                : '/assets/no-image.svg'">
+        </div>
+    </div>
 </div>

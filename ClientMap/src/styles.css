@@ -94,6 +94,21 @@ circle {
     height: 360px;
 }
 
+.modal-btn {
+    font-size: large;
+    border: none;
+    width: 100px;
+    height: 40px;
+}
+
+.modal-btn-close {
+    
+}
+
+.modal-btn-gr {
+
+}
+
 .leaflet-marker-icon[src="/assets/marker/Marker-Camera-Online.svg"],
 .leaflet-marker-icon[src="/assets/marker/Marker-Camera-UnActive.svg"],
 .leaflet-marker-icon[src="/assets/marker/Marker-Station-Current.svg"],
