@@ -20,7 +20,7 @@ namespace Server.SignalR
             if(Context.User.GetRole() == Roles.Camera) {
                 var success = await _tracker.CameraConnected(Context.User.GetName(), Context.ConnectionId);
                 if(success) {
-                    await Clients.Others.SendAsync(Channels.CamerasConnected, Context.User.GetName());
+                    await Clients.Group(ChannelsGroups.Station).SendAsync(Channels.CamerasConnected, Context.User.GetName());
                 }
                 else {
                     Context.Abort();
@@ -30,7 +30,8 @@ namespace Server.SignalR
             else {
                 var success = await _tracker.StationConnected(Context.User.GetName(), Context.ConnectionId);
                 if(success) {
-                    await Clients.Others.SendAsync(Channels.StationConnected, Context.User.GetName());
+                    await Groups.AddToGroupAsync(Context.ConnectionId, ChannelsGroups.Station);
+                    await Clients.OthersInGroup(ChannelsGroups.Station).SendAsync(Channels.StationConnected, Context.User.GetName());
                     await Clients.Caller.SendAsync(Channels.GetOnlineStations, await _tracker.GetOnlineStations());
                     await Clients.Caller.SendAsync(Channels.GetOnlineCameras, await _tracker.GetOnlineCameras());
                 }
@@ -46,13 +47,14 @@ namespace Server.SignalR
             if(Context.User.GetRole() == Roles.Camera) {
                 var success = await _tracker.CameraDisconnected(Context.User.GetName(), Context.ConnectionId);
                 if(success) {
-                    await Clients.Others.SendAsync(Channels.CamerasDisconnected, Context.User.GetName());
+                    await Clients.Group(ChannelsGroups.Station).SendAsync(Channels.CamerasDisconnected, Context.User.GetName());
                 }
             }
             else {
                 var success = await _tracker.StationDisconnected(Context.User.GetName(), Context.ConnectionId);
                 if(success) {
-                    await Clients.Others.SendAsync(Channels.StationDisconnected, Context.User.GetName());
+                    await Groups.RemoveFromGroupAsync(Context.ConnectionId, ChannelsGroups.Station);
+                    await Clients.Group(ChannelsGroups.Station).SendAsync(Channels.StationDisconnected, Context.User.GetName());
                 }
             }
             await base.OnDisconnectedAsync(exception);
@@ -60,7 +62,7 @@ namespace Server.SignalR
 
         public async Task SendFrame(string frameBase64)
         {
-            await Clients.Others.SendAsync(Channels.ReceiveFrameBase64, new { 
+            await Clients.Group(ChannelsGroups.Station).SendAsync(Channels.ReceiveFrameBase64, new { 
                 cameraName = Context.User.GetName(),
                 frameBase64 = frameBase64
             });
