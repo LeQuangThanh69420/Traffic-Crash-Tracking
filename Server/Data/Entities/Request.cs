@@ -4,7 +4,7 @@ namespace Server.Data.Entities
     {
         public long RequestId { get; set; }
         public long CameraId { get; set; }
-        public long StationId { get; set; }
+        public long? StationId { get; set; }
         public DateTime CreatedDate { get; set; }
         public bool? Checked { get; set; }
         public DateTime? CheckedDate { get; set; }

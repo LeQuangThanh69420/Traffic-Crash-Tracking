@@ -9,5 +9,6 @@ namespace Server.Data
         public const string CamerasDisconnected = "CamerasDisconnected";
         public const string GetOnlineCameras = "GetOnlineCameras";
         public const string ReceiveFrameBase64 = "ReceiveFrameBase64";
+        public const string ChangeStatus = "ChangeStatus";
     }
 }
