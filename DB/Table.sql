@@ -33,7 +33,7 @@ GO
 CREATE TABLE Request (
     RequestId BIGINT IDENTITY(1,1) PRIMARY KEY,
     CameraId BIGINT NOT NULL FOREIGN KEY REFERENCES Camera(CameraId),
-    StationId BIGINT NOT NULL FOREIGN KEY REFERENCES Station(StationId),
+    StationId BIGINT FOREIGN KEY REFERENCES Station(StationId),
     CreatedDate DATETIME2(0) NOT NULL,
     Checked BIT,
     CheckedDate DATETIME2(0),
