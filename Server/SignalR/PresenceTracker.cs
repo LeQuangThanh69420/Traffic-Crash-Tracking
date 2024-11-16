@@ -2,8 +2,8 @@ namespace Server.SignalR
 {
     public class PresenceTracker
     {
-        private static readonly Dictionary<string, string> OnlineStations = new Dictionary<string, string>();
-        private static readonly Dictionary<string, string> OnlineCameras = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> OnlineStations = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> OnlineCameras = new Dictionary<string, string>();
 
         public Task<bool> StationConnected(string name, string connectionId)
         {

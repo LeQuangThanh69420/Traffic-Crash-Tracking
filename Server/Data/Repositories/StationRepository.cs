@@ -25,6 +25,12 @@ namespace Server.Data.Repositories
             return station;
         }
 
+        public async Task<Station?> GetStationToChangeStatus(string name)
+        {
+            var station = _context.Station.SingleOrDefault(s => s.StationName == name);
+            return station;
+        }
+
         public async Task<List<StationGetStationsOutputDTO>> GetStations()
         {
             return await _context.Station

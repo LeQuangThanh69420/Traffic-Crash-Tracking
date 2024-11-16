@@ -19,6 +19,12 @@ namespace Server.Data.Repositories
             return camera;
         }
 
+        public async Task<Camera?> GetCameraToChangeStatus(string name)
+        {
+            var camera = await _context.Camera.SingleOrDefaultAsync(x => x.CameraName == name);
+            return camera;
+        }
+
         public async Task<List<CameraGetCamerasOutputDTO>> GetCameras()
         {
             return await _context.Camera

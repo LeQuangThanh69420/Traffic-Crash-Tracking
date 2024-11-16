@@ -7,6 +7,7 @@ namespace Server.Data.IRepositories
     {
         Task<Station?> GetStation(string username, string password);
         Task<Station?> GetStationByName(string username);
+        Task<Station?> GetStationToChangeStatus(string name);
         Task<List<StationGetStationsOutputDTO>> GetStations();
     }
 }
