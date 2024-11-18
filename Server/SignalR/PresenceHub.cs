@@ -77,10 +77,12 @@ namespace Server.SignalR
                 if(camera != null) {
                     camera.IsActive = !camera.IsActive;
                     if(await _uow.Complete()) {
-                        await Clients.Client(PresenceTracker.OnlineCameras[name]).SendAsync(Channels.ForcedDisconnect);
+                        if (PresenceTracker.OnlineCameras.ContainsKey(name)) {
+                            await Clients.Client(PresenceTracker.OnlineCameras[name]).SendAsync(Channels.ForcedDisconnect); 
+                        }
                         await Clients.Group(ChannelsGroups.Station).SendAsync(Channels.ChangeStatus, new {
                             obj = obj,
-                            name = camera.CameraName,
+                            name = name,
                         });
                     }
                 }
@@ -91,10 +93,12 @@ namespace Server.SignalR
                 if(station != null) {
                     station.IsActive = !station.IsActive;
                     if(await _uow.Complete()) {
-                        await Clients.Client(PresenceTracker.OnlineStations[name]).SendAsync(Channels.ForcedDisconnect);
+                        if (PresenceTracker.OnlineStations.ContainsKey(name)) {
+                            await Clients.Client(PresenceTracker.OnlineStations[name]).SendAsync(Channels.ForcedDisconnect);
+                        }
                         await Clients.Group(ChannelsGroups.Station).SendAsync(Channels.ChangeStatus, new {
                             obj = obj,
-                            name = station.StationName,
+                            name = name,
                         });
                     }
                 }
