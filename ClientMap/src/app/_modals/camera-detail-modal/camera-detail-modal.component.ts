@@ -20,4 +20,9 @@ export class CameraDetailModalComponent implements OnInit, OnDestroy{
 
   ngOnDestroy() {
   }
+
+  ChangeStatus() {
+    this.presence.ChangeStatus("Camera", this.cameraDetail.input.cameraName);
+    this.cameraDetail.Close();
+  }
 }

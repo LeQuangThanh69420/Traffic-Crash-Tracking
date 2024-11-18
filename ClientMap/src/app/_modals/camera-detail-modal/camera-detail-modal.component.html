@@ -3,7 +3,17 @@
         <div class="modal-info">
             <h1>ID: {{cameraDetail.input.cameraId}}</h1>
             <h1>Name: {{cameraDetail.input.cameraName}}</h1>
-            <button class="modal-btn" (click)="cameraDetail.Close()">Close</button>
+            <div class="modal-btn-gr">
+                <button class="modal-btn" 
+                    [ngClass]="{
+                        'modal-btn-unactive': cameraDetail.input.isActive,
+                        'modal-btn-active': !cameraDetail.input.isActive
+                    }" 
+                    (click)="ChangeStatus()">
+                    {{ cameraDetail.input.isActive ? 'Unactive' : 'Active' }}
+                </button>
+                <button class="modal-btn modal-btn-close" (click)="cameraDetail.Close()">Close</button>
+            </div>
         </div>
         <div class="modal-camera-img">
             <img class="modal-camera-img" [src]="presence.onlineCameras.get(cameraDetail.input.cameraName) 

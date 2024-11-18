@@ -2,7 +2,19 @@
     <div class="modal-layout white-layout">
         <div class="modal-info">
             <h1>{{stationDetail.input.stationName}}</h1>
-            <button class="modal-btn" (click)="stationDetail.Close()">Close</button>
+            <div class="modal-btn-gr">
+                <button class="modal-btn" 
+                    [ngClass]="{
+                        'modal-btn-unactive': stationDetail.input.isActive,
+                        'modal-btn-active': !stationDetail.input.isActive
+                    }" 
+                    [disabled]="stationDetail.input.role == 'Admin'"
+                    [hidden]="stationController.currentUser.role != 'Admin'"
+                    (click)="ChangeStatus()">
+                    {{ stationDetail.input.isActive ? 'Unactive' : 'Active' }}
+                </button>
+                <button class="modal-btn modal-btn-close" (click)="stationDetail.Close()">Close</button>
+            </div>
         </div>
         <div>
 

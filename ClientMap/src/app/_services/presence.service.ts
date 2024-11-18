@@ -18,6 +18,7 @@ export class PresenceService {
   onlineCameras: Map<string, string> = new Map();
   stationMarkerUpdated = new Subject<void>();
   cameraMarkerUpdated = new Subject<void>();
+  statusMarkerUpdated = new Subject<any>();
 
   constructor(
     private stationController: StationControllerService, 
@@ -72,6 +73,20 @@ export class PresenceService {
     this.hubConnection.on("ReceiveFrameBase64", (camera: any) => {
       this.onlineCameras.set(camera.cameraName, camera.frameBase64);
     });
+
+    this.hubConnection.on("ChangeStatus", (output: any) => {
+      this.statusMarkerUpdated.next(output);
+    });
+
+    this.hubConnection.on("ForcedDisconnect", () => {
+      this.stopHubConnection();
+      this.stationController.Logout();
+    });
+  }
+
+  ChangeStatus(...input: any[]) {
+    return this.hubConnection.invoke("ChangeStatus", ...input)
+      .catch(error => console.log(error));
   }
 
   stopHubConnection() {

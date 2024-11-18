@@ -20,4 +20,9 @@ export class StationDetailModalComponent implements OnInit, OnDestroy{
 
   ngOnDestroy() {
   }
+
+  ChangeStatus() {
+    this.presence.ChangeStatus("Station", this.stationDetail.input.stationName);
+    this.stationDetail.Close();
+  }
 }

@@ -33,6 +33,11 @@ button {
     border-radius: 8px;
 }
 
+button:disabled {
+    filter: grayscale(75%);
+    background-color: #cccccc1f;
+}
+
 li:nth-child(even) {
     background-color: whitesmoke;
 }
@@ -96,17 +101,32 @@ circle {
 
 .modal-btn {
     font-size: large;
-    border: none;
     width: 100px;
     height: 40px;
+    margin-right: 10px;
 }
 
 .modal-btn-close {
-    
+    color: white;
+    background-color: var(--pri);
+    border: none;
+}
+
+.modal-btn-unactive {
+    color: var(--unactive);
+    background-color: white;
+    border: 2px solid var(--unactive);
+}
+
+.modal-btn-active {
+    color: var(--online);
+    background-color: white;
+    border: 2px solid var(--online);
 }
 
 .modal-btn-gr {
-
+    display: flex;
+    flex-direction: row;
 }
 
 .leaflet-marker-icon[src="/assets/marker/Marker-Camera-Online.svg"],
@@ -138,6 +158,18 @@ circle {
     -webkit-line-clamp: 2; /* Giới hạn số dòng là 2 */
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.eye-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 2px solid black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .status {
@@ -240,7 +272,7 @@ circle {
     font-size: large;
     background-color: var(--pri);
     border: none;
-    width: 100%;
+    width: 80%;
     height: 40px;
 }
 
