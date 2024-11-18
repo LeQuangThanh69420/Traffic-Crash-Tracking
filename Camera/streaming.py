@@ -1,9 +1,17 @@
+import Connection
 import LoadData
 
-import cv2
 import time
+import base64
+import logging
+
+import cv2
 from ultralytics import YOLO
 from deep_sort_realtime.deepsort_tracker import DeepSort
+
+hub_connection = Connection.PresenceHubConnection()
+hub_connection.start()
+hub_connection.on("ForcedDisconnect", Connection.Exit)
 
 classes = LoadData.GetClasses()
 model = YOLO(LoadData.GetModel(1)).to(LoadData.GetDevice())
@@ -52,10 +60,17 @@ while True:
         cv2.rectangle(frame, (x1, y1), (x2, y2), (B, G, R), 2)
         cv2.putText(frame, f'{track_id} {class_name}', (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (B, G, R), 2)
     
+    frame=cv2.resize(frame,(640,360))
+    _, buffer = cv2.imencode('.jpg', frame)
+    frame64 = base64.b64encode(buffer).decode('utf-8')
+
+    hub_connection.send("SendFrame", [frame64])
+
     cv2.imshow('Camera', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+hub_connection.stop()
 capture.release()
 cv2.destroyAllWindows()
