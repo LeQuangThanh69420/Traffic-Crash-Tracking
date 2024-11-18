@@ -1,3 +1,4 @@
+import sys
 import time
 import base64
 import cv2
@@ -19,6 +20,7 @@ def GetCameraToken():
         if response.status_code == 200:
             return data['token']
         elif response.status_code == 404:
+            print(data['message'])
             return data['message']
     except requests.exceptions.ConnectionError:
         print("Cannot connect")
@@ -43,3 +45,6 @@ def PresenceHubConnection():
         "max_attempts": 5
     })\
     .build()
+
+def Exit():
+    sys.exit(0)
