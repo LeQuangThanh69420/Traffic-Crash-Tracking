@@ -12,12 +12,15 @@
         <div class="login-form-row">
             <fieldset class="login-form-input-fs">
                 <legend class="login-form-input-lg">Password</legend>
-                <input class="login-form-input" type="password" name="Password" placeholder="Password"
+                <input class="login-form-input" [type]="visible?'text':'password'" name="Password" placeholder="Password"
                     [(ngModel)]="currentUser.password">
             </fieldset>
         </div>
         <div class="login-form-row">
             <button class="login-btn" (submit)="Login()" (click)="Login()">Login</button>
+            <button class="eye-btn">
+                <img style="width: 28px;" (click)="showPassword()" [src]="visible?'/assets/eye-off.svg':'/assets/eye.svg'">
+            </button>
         </div>
         </form>
     </div>

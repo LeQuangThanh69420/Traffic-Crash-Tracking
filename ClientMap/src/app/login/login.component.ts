@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  visible: boolean = false;
   currentUser: StationLoginInputDTO = { username: "", password: ""};
 
   constructor(
@@ -21,6 +22,10 @@ export class LoginComponent implements OnInit {
     if(this.stationController.currentUser) {
       this.router.navigate(['/main']);
     }
+  }
+
+  showPassword() {
+    this.visible = !this.visible;
   }
 
   Login() {
