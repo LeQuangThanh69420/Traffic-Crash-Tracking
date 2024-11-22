@@ -62,6 +62,7 @@ namespace Server.SignalR
             await base.OnDisconnectedAsync(exception);
         }
 
+        [Authorize(Roles = Roles.Camera)]
         public async Task SendFrame(string frameBase64)
         {
             await Clients.Group(ChannelsGroups.Station).SendAsync(Channels.ReceiveFrameBase64, new { 
@@ -70,6 +71,7 @@ namespace Server.SignalR
             });
         }
 
+        [Authorize(Policy = Policies.Admin)]
         public async Task ChangeStatus(string obj, string name)
         {
             if (obj == "Camera") {
