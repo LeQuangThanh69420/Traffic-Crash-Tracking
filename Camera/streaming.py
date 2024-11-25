@@ -1,5 +1,6 @@
 import Connection
 import LoadData
+import Calculator
 
 import time
 import base64
@@ -11,6 +12,7 @@ from deep_sort_realtime.deepsort_tracker import DeepSort
 
 hub_connection = Connection.PresenceHubConnection()
 hub_connection.start()
+hub_connection.on_close(lambda: Connection.Exit)
 hub_connection.on("ForcedDisconnect", Connection.Exit)
 
 classes = LoadData.GetClasses()
