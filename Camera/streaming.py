@@ -26,6 +26,8 @@ height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
 tracker = DeepSort(max_age = 5)
 tracks = []
 
+checked_pairs = set()
+
 if not capture.isOpened():
     print("Cannot open")
     exit()
@@ -55,16 +57,31 @@ while True:
                     detect.append([[x1, y1, x2 - x1, y2 - y1], confidence, (class_name, classes[class_name])])
 
     tracks = tracker.update_tracks(detect, frame=frame)
+    current_tracks = {}
+
     for track in tracks:
         track_id = track.track_id
-        ltrb = track.to_ltrb()
-        x1, y1, x2, y2 = map(int, ltrb)
+        x1, y1, x2, y2 = map(int, track.to_ltrb())
         class_name, (R, G, B) = track.get_det_class()
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (B, G, R), 2)
         cv2.putText(frame, f'{track_id} {class_name}', (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (B, G, R), 2)
+
+        current_tracks[track_id] = (x1, y1, x2, y2, class_name)
+
+    for id1, box1 in current_tracks.items():
+        for id2, box2 in current_tracks.items():
+            if id1 >= id2:
+                continue
+            pair = (id1, id2)
+            if pair in checked_pairs:
+                continue
+            iou = Calculator.IOU(box1[:4], box2[:4])
+            if iou > 0.1 and iou < 0.75:
+                print(f"Collision detected: {id1} ({box1[4]}) and {id2} ({box2[4]}), IoU: {iou:.2f}")
+                checked_pairs.add(pair)
     
-    frame=cv2.resize(frame,(640,360))
+    frame=cv2.resize(frame,(960,540))
     _, buffer = cv2.imencode('.jpg', frame)
     frame64 = base64.b64encode(buffer).decode('utf-8')
 
