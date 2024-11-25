@@ -27,6 +27,7 @@ tracker = DeepSort(max_age = 5)
 tracks = []
 
 checked_pairs = set()
+previous_positions = {}
 
 if not capture.isOpened():
     print("Cannot open")
@@ -58,16 +59,22 @@ while True:
 
     tracks = tracker.update_tracks(detect, frame=frame)
     current_tracks = {}
+    previous_tracks = {}
 
     for track in tracks:
         track_id = track.track_id
         x1, y1, x2, y2 = map(int, track.to_ltrb())
         class_name, (R, G, B) = track.get_det_class()
 
+        if track_id in previous_positions:
+            previous_tracks[track_id] = previous_positions[track_id]
+        else:
+            previous_tracks[track_id] = (0, 0, 0, 0)
+        previous_positions[track_id] = (x1, y1, x2, y2)
+        current_tracks[track_id] = (x1, y1, x2, y2)
+
         cv2.rectangle(frame, (x1, y1), (x2, y2), (B, G, R), 2)
         cv2.putText(frame, f'{track_id} {class_name}', (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (B, G, R), 2)
-
-        current_tracks[track_id] = (x1, y1, x2, y2)
 
     for id1, box1 in current_tracks.items():
         for id2, box2 in current_tracks.items():
