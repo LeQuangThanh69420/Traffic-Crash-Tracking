@@ -39,7 +39,7 @@ while True:
 
     frame=cv2.resize(frame,(width,height))
 
-    detect  = []
+    detect = []
 
     results = model.predict(frame, verbose=False)
     for result in results:
