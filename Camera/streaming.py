@@ -67,7 +67,7 @@ while True:
         cv2.rectangle(frame, (x1, y1), (x2, y2), (B, G, R), 2)
         cv2.putText(frame, f'{track_id} {class_name}', (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (B, G, R), 2)
 
-        current_tracks[track_id] = (x1, y1, x2, y2, class_name)
+        current_tracks[track_id] = (x1, y1, x2, y2)
 
     for id1, box1 in current_tracks.items():
         for id2, box2 in current_tracks.items():
@@ -76,19 +76,17 @@ while True:
             pair = (id1, id2)
             if pair in checked_pairs:
                 continue
-            iou = Calculator.IOU(box1[:4], box2[:4])
+            iou = Calculator.IOU(box1, box2)
             if iou > 0.1 and iou < 0.75:
-                print(f"Collision detected: {id1} ({box1[4]}) and {id2} ({box2[4]}), IoU: {iou:.2f}")
+                print(f"Collision detected: {id1} and {id2}, IoU: {iou:.2f}")
                 checked_pairs.add(pair)
     
     frame=cv2.resize(frame,(960,540))
     _, buffer = cv2.imencode('.jpg', frame)
     frame64 = base64.b64encode(buffer).decode('utf-8')
-
     hub_connection.send("SendFrame", [frame64])
 
     cv2.imshow('Camera', frame)
-
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
