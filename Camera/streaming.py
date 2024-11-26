@@ -84,7 +84,7 @@ while True:
             if pair in checked_pairs:
                 continue
             iou = Calculator.IOU(box1, box2)
-            if iou > 0.1 and iou < 0.75:
+            if iou > 0.1 and iou < 0.5:
                 print(f"Collision detected: {id1} and {id2}, IoU: {iou:.2f}")
                 checked_pairs.add(pair)
     
