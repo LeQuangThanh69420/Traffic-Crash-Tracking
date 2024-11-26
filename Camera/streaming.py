@@ -69,7 +69,7 @@ while True:
         if track_id in previous_positions:
             previous_tracks[track_id] = previous_positions[track_id]
         else:
-            previous_tracks[track_id] = (0, 0, 0, 0)
+            previous_tracks[track_id] = (x1, y1, x2, y2)
         previous_positions[track_id] = (x1, y1, x2, y2)
         current_tracks[track_id] = (x1, y1, x2, y2)
 
