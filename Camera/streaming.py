@@ -64,7 +64,7 @@ while True:
     for track in tracks:
         track_id = track.track_id
         x1, y1, x2, y2 = map(int, track.to_ltrb())
-        class_name, (R, G, B) = track.get_det_class()
+        class_name, (R, G, B), confidence = track.get_det_class()
         if track_id in previous_positions:
             previous_tracks[track_id] = previous_positions[track_id]
         else:
@@ -74,7 +74,7 @@ while True:
         (start, end, vel) = Draw.Movement(previous_tracks[track_id], (x1, y1, x2, y2))
         cv2.arrowedLine(frame, start, end, (B, G, R), 2, tipLength=0.2)
         cv2.rectangle(frame, (x1, y1), (x2, y2), (B, G, R), 2)
-        cv2.putText(frame, f'{track_id} {class_name} V:{vel:.2f}', (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (B, G, R), 2)
+        cv2.putText(frame, f'{track_id} {class_name} C:{confidence:.2f} V:{vel:.2f}', (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (B, G, R), 2)
 
     for id1, box1 in current_tracks.items():
         for id2, box2 in current_tracks.items():
