@@ -55,7 +55,7 @@ while True:
                 x1, y1, x2, y2 = map(int, box.xyxy[0])
                 confidence = box.conf[0]
                 if confidence > 0.5:
-                    detect.append([[x1, y1, x2 - x1, y2 - y1], confidence, (class_name, classes[class_name])])
+                    detect.append([[x1, y1, x2 - x1, y2 - y1], confidence, (class_name, classes[class_name], confidence)])
 
     tracks = tracker.update_tracks(detect, frame=frame)
     current_tracks = {}
