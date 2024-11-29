@@ -22,6 +22,8 @@ export class MainComponent implements OnInit {
   markers = markers;
   stationMarkerUpdate: Subscription;
   cameraMarkerUpdated: Subscription;
+  statusMarkerUpdated: Subscription;
+
   stationMarkers: Map<string, L.Marker<any>> = new Map();
   cameraMarkers: Map<string, L.Marker<any>> = new Map();
 
@@ -38,8 +40,14 @@ export class MainComponent implements OnInit {
 
   LoadMap() {
     this.map = L.map('map', { attributionControl: false })
-      .setView([this.stationController.currentUser.latitude, this.stationController.currentUser.longitude], 15)
+      .setView([this.stationController.currentUser.latitude, this.stationController.currentUser.longitude], 14)
       .on("click", (e) => {
+        if (this.isAdding == true) {
+          if (this.tab == "Camera") {
+          }
+          if (this.tab == "Station") {
+          }
+        }
       })
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -47,6 +55,9 @@ export class MainComponent implements OnInit {
   }
 
   LoadStationMarker() {
+    this.stationMarkers.forEach((v, k) => {
+      this.map.removeLayer(v);
+    });
     this.stations.forEach(station => {
       var icon = this.GetStationMarker(station);
       this.stationMarkers.set(station.stationName, 
@@ -80,6 +91,9 @@ export class MainComponent implements OnInit {
   }
 
   LoadCameraMarker() {
+    this.cameraMarkers.forEach((v, k) => {
+      this.map.removeLayer(v);
+    });
     this.cameras.forEach(camera => {
       var icon = this.GetCameraMarker(camera);
       this.cameraMarkers.set(camera.cameraName, 
@@ -109,16 +123,31 @@ export class MainComponent implements OnInit {
 
   MarkerUpdate() {
     this.stationMarkerUpdate = this.presence.stationMarkerUpdated.subscribe(() => {
-      this.stationMarkers.forEach((v, k) => {
-        this.map.removeLayer(v);
-      });
       this.LoadStationMarker();
     });
     this.cameraMarkerUpdated = this.presence.cameraMarkerUpdated.subscribe(() => {
-      this.cameraMarkers.forEach((v, k) => {
-        this.map.removeLayer(v);
-      });
       this.LoadCameraMarker();
+    });
+  }
+
+  StatusUpdate() {
+    this.statusMarkerUpdated = this.presence.statusMarkerUpdated.subscribe((output: any) => {
+      if (output.obj == "Station") {
+        var station = this.stations.find(s => s.stationName === output.name);
+        if (station) {
+          station.isActive = !station.isActive;
+        }
+        this.LoadStationMarker();
+        return;
+      }
+      if (output.obj == "Camera") {
+        var camera = this.cameras.find(s => s.cameraName === output.name);
+        if (camera) {
+          camera.isActive = !camera.isActive;
+        }
+        this.LoadCameraMarker();
+        return;
+      }
     });
   }
 
@@ -143,6 +172,7 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.LoadMap();
     this.MarkerUpdate();
+    this.StatusUpdate();
     this.presence.createHubConnection();
     setTimeout(() => {
       this.GetStations();
@@ -151,8 +181,9 @@ export class MainComponent implements OnInit {
 
   }
 
+  isAdding: boolean = false;
   addTog() {
-
+    this.isAdding = !this.isAdding;
   }
 
   Logout() {
@@ -169,6 +200,6 @@ export class MainComponent implements OnInit {
   }
 
   toLocation(latitude: number, longitude: number) {
-    this.map.setView([latitude, longitude], 15);
+    this.map.setView([latitude, longitude], 14);
   }
 }

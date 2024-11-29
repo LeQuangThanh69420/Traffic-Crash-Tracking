@@ -7,7 +7,7 @@
             <p class="two-line" [title]="stationController.currentUser.address"><b>Address:</b> {{stationController.currentUser.address}}</p>
             <div class="btn-group">
                 <button (click)="addTog()" class="btn-addTog" *ngIf="!(stationController.currentUser.role != 'Admin')">
-                    <img style="width: 28px;" src="/assets/plus.svg" alt="">
+                    <img style="width: 28px;" [src]="isAdding?'/assets/cancel.svg':'/assets/plus.svg'" alt="">
                 </button>
                 <button (click)="toLocation(stationController.currentUser.latitude, stationController.currentUser.longitude)" class="btn-toMyLocation"></button>
                 <button (click)="Logout()" class="btn-logout">Logout</button>

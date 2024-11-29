@@ -24,6 +24,11 @@ body {
     background-color: var(--bg1);
 }
 
+hr {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
 input:focus::placeholder {
     color: transparent;
 }
