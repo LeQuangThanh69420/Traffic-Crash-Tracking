@@ -5,8 +5,8 @@ namespace Server.Data.IRepositories
 {
     public interface ICameraRepository
     {
-        Task<Camera?> GetCameraByName(string cameraName);
-        Task<Camera?> GetCameraToChangeStatus(string name);
+        Task<Camera?> GetCameraByNameAndActive(string cameraName);
+        Task<Camera?> GetCameraByName(string name);
         Task<List<CameraGetCamerasOutputDTO>> GetCameras();
     }
 }

@@ -21,7 +21,7 @@ namespace Server.Controllers
         {
             try 
             {
-                var camera = await _uow.CameraRepository.GetCameraByName(cameraName);
+                var camera = await _uow.CameraRepository.GetCameraByNameAndActive(cameraName);
                 if (camera == null) {
                     return NotFound(new { message = "Camera not found or it's unactive" } );
                 }

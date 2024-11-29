@@ -75,7 +75,7 @@ namespace Server.SignalR
         public async Task ChangeStatus(string obj, string name)
         {
             if (obj == "Camera") {
-                var camera = await _uow.CameraRepository.GetCameraToChangeStatus(name);
+                var camera = await _uow.CameraRepository.GetCameraByName(name);
                 if(camera != null) {
                     camera.IsActive = !camera.IsActive;
                     if(await _uow.Complete()) {

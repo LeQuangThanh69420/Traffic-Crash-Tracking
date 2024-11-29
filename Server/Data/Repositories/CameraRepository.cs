@@ -13,13 +13,13 @@ namespace Server.Data.Repositories
             _context = context;
         }
 
-        public async Task<Camera?> GetCameraByName(string cameraName)
+        public async Task<Camera?> GetCameraByNameAndActive(string cameraName)
         {
             var camera = await _context.Camera.SingleOrDefaultAsync(x => x.CameraName == cameraName && x.IsActive == true);
             return camera;
         }
 
-        public async Task<Camera?> GetCameraToChangeStatus(string name)
+        public async Task<Camera?> GetCameraByName(string name)
         {
             var camera = await _context.Camera.SingleOrDefaultAsync(c => c.CameraName == name);
             return camera;
