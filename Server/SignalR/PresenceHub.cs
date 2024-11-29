@@ -91,7 +91,7 @@ namespace Server.SignalR
                 return;
             }
             if (obj == "Station") {
-                var station = await _uow.StationRepository.GetStationToChangeStatus(name);
+                var station = await _uow.StationRepository.GetStationByStationName(name);
                 if(station != null) {
                     station.IsActive = !station.IsActive;
                     if(await _uow.Complete()) {
