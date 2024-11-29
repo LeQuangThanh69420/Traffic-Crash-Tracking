@@ -1,5 +1,7 @@
 import math
 
+vecto_zero_threshold = 3
+
 def IOU(box1, box2):
     x1_inter = max(box1[0], box2[0])
     y1_inter = max(box1[1], box2[1])
@@ -24,27 +26,90 @@ def IOU(box1, box2):
         return 0
     return intersection / union
 
-def calculate_angle(prebox1, curbox1, prebox2, curbox2):
-    A = ((prebox1[0] + prebox1[2]) // 2, (prebox1[1] + prebox1[3]) // 2)
-    B = ((curbox1[0] + curbox1[2]) // 2, (curbox1[1] + curbox1[3]) // 2)
-    C = ((prebox2[0] + prebox2[2]) // 2, (prebox2[1] + prebox2[3]) // 2)
-    D = ((curbox2[0] + curbox2[2]) // 2, (curbox2[1] + curbox2[3]) // 2)
-    # Tính tọa độ của 2 vectơ
-    AB = (B[0] - A[0], B[1] - A[1])
-    CD = (D[0] - C[0], D[1] - C[1])
-    # Tích vô hướng
-    dot_product = AB[0] * CD[0] + AB[1] * CD[1]
-    # Độ dài của các vectơ
-    magnitude_AB = math.sqrt(AB[0]**2 + AB[1]**2)
-    magnitude_CD = math.sqrt(CD[0]**2 + CD[1]**2)
-    if magnitude_AB == 0 or magnitude_CD == 0:
-        return 0
-    # Tính cos(theta)    
-    cos_theta = dot_product / (magnitude_AB * magnitude_CD)
-    # Giới hạn cos_theta trong khoảng [-1, 1] để tránh lỗi tính toán do làm tròn
+def IntersectionPoint(A, B, C, D):
+    x1, y1 = A
+    x2, y2 = B
+    x3, y3 = C
+    x4, y4 = D
+    # Tính hệ số của phương trình đường thẳng
+    denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    if denom == 0:
+        return None
+    # Tìm giao điểm
+    px = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / denom
+    py = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / denom
+    return (int(px), int(py))
+
+def Beetween(A, B, M):
+    x1, y1 = A
+    x2, y2 = B
+    x3, y3 = M
+    if (min(x1, x2) < x3 < max(x1, x2)):
+        return True
+    elif(min(y1, y2) < y3 < max(y1, y2)):
+        return True
+    else:
+        return False
+
+def VectoDotProduce(vecto_1, vecto_2):
+    return vecto_1[0] * vecto_2[0] + vecto_1[1] * vecto_2[1]
+
+def VectoMagnitude(vecto):
+    return math.sqrt(vecto[0]**2 + vecto[1]**2)
+
+def VectoAngle(dot_product, magnitude_1, magnitude_2):
+    cos_theta = dot_product / (magnitude_1 * magnitude_2)
     cos_theta = max(-1, min(1, cos_theta))
-    # Tính góc bằng radian
     angle_rad = math.acos(cos_theta)
-    # Đổi radian sang độ (nếu cần)
     angle_deg = math.degrees(angle_rad)
     return angle_deg
+
+def VectoChecker(box_A, box_B, box_C, box_D):
+    A = ((box_A[0] + box_A[2]) // 2, (box_A[1] + box_A[3]) // 2)
+    B = ((box_B[0] + box_B[2]) // 2, (box_B[1] + box_B[3]) // 2)
+    C = ((box_C[0] + box_C[2]) // 2, (box_C[1] + box_C[3]) // 2)
+    D = ((box_D[0] + box_D[2]) // 2, (box_D[1] + box_D[3]) // 2)
+    AB = (B[0] - A[0], B[1] - A[1])
+    CD = (D[0] - C[0], D[1] - C[1])
+    magnitude_AB = VectoMagnitude(AB)
+    magnitude_CD = VectoMagnitude(CD)
+
+    if magnitude_AB <= vecto_zero_threshold and magnitude_CD <= vecto_zero_threshold:
+        return (False, 0, "")
+
+    if magnitude_AB > vecto_zero_threshold and magnitude_CD > vecto_zero_threshold:
+        dot_product = VectoDotProduce(AB, CD)
+        angle_deg = VectoAngle(dot_product, magnitude_AB, magnitude_CD)
+        if angle_deg > 30 and angle_deg < 150:
+            E = IntersectionPoint(A, B, C, D)
+            if Beetween(A=E, B=B, M=A) and Beetween(A=E, B=D, M=C):
+                return (False, 0, "")
+            return (True, angle_deg, "th1")
+        else:
+            return (False, 0, "")
+
+    if magnitude_AB > vecto_zero_threshold and magnitude_CD <= vecto_zero_threshold:
+        AC = (C[0] - A[0], C[1] - A[1])
+        magnitude_AC = VectoMagnitude(AC)
+        if magnitude_AC <= vecto_zero_threshold:
+            return (False, 0, "")
+        else:
+            dot_product = VectoDotProduce(AB, AC)
+            angle_deg = VectoAngle(dot_product, magnitude_AB, magnitude_AC)
+            if angle_deg < 20:
+                return (True, angle_deg, "th0")
+            else:
+                return (False, 0, "")
+        
+    if magnitude_AB <= vecto_zero_threshold and magnitude_CD > vecto_zero_threshold:
+        CA = (A[0] - C[0], A[1] - C[1])
+        magnitude_CA = VectoMagnitude(CA)
+        if magnitude_CA <= vecto_zero_threshold:
+            return (False, 0, "")
+        else:
+            dot_product = VectoDotProduce(CA, CD)
+            angle_deg = VectoAngle(dot_product, magnitude_CA, magnitude_CD)
+            if angle_deg < 20:
+                return (True, angle_deg, "th0")
+            else:
+                return (False, 0, "")

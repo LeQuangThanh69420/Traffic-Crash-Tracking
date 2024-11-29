@@ -39,7 +39,7 @@ while True:
     if not ret:
         capture.set(cv2.CAP_PROP_POS_FRAMES, 0)
         continue
-        #break
+        # break
 
     frame=cv2.resize(frame,(width,height))
 
@@ -84,9 +84,10 @@ while True:
             if pair in checked_pairs:
                 continue
             iou = Calculator.IOU(box1, box2)
-            if iou > 0.02 and iou < 0.3:
-                print(f"Collision detected: {id1} and {id2}, IoU: {iou:.2f}")
-                checked_pairs.add(pair)
+            if iou > 0.07 and iou < 0.3:
+                (t, a, th) = Calculator.VectoChecker(previous_tracks[id1], box1, previous_tracks[id2], box2)
+                if t:
+                    checked_pairs.add(pair)
     
     frame=cv2.resize(frame,(960,540))
     _, buffer = cv2.imencode('.jpg', frame)
