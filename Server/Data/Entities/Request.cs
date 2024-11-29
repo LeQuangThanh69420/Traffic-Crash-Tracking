@@ -7,10 +7,10 @@ namespace Server.Data.Entities
         public long RecommendStationId { get; set; }
         public long? StationId { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string Detail { get; set; }
+        public string PhotoURL { get; set; }
         public bool? Checked { get; set; }
         public DateTime? CheckedDate { get; set; }
-        public string Detail { get; set; }
         public string? Description { get; set; }
-        public string PhotoURL { get; set; }
     }
 }
