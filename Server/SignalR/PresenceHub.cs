@@ -71,6 +71,21 @@ namespace Server.SignalR
             });
         }
 
+        [Authorize(Roles = Roles.Camera)]
+        public async Task SendRequest(string detail, string frameBase64)
+        {
+            var camera = await _uow.CameraRepository.GetCameraByNameAndActive(Context.User.GetName());
+            if (camera != null) {
+                var fileName = $"{detail}.jpg";
+                byte[] frameBytes = Convert.FromBase64String(frameBase64);
+                await File.WriteAllBytesAsync($"./_assets/{fileName}", frameBytes);
+                var success = await _uow.RequestRepository
+                    .AddRequest(camera.CameraId, 
+                    camera.Location.Coordinate.X,
+                    camera.Location.Coordinate.Y, detail, $"assets/{fileName}");
+            }
+        }
+
         [Authorize(Policy = Policies.Admin)]
         public async Task ChangeStatus(string obj, string name)
         {

@@ -21,7 +21,7 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "_assets")),
-    RequestPath = "/assets",
+    RequestPath = "/api/assets",
 });
 
 app.UseHttpsRedirection();

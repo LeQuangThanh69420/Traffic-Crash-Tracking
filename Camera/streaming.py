@@ -87,6 +87,10 @@ while True:
             if iou > 0.07 and iou < 0.3:
                 (t, a, th) = Calculator.VectoChecker(previous_tracks[id1], box1, previous_tracks[id2], box2)
                 if t:
+                    detail = f"{id1}-{id2}-i{iou:.2f}-{th}-a{a:.2f}"
+                    _, buffer = cv2.imencode('.jpg', frame)
+                    frameBase64 = base64.b64encode(buffer).decode('utf-8')
+                    hub_connection.send("SendRequest", [detail, frameBase64])
                     checked_pairs.add(pair)
     
     frame=cv2.resize(frame,(960,540))
