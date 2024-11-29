@@ -1,3 +1,4 @@
+using Microsoft.Extensions.FileProviders;
 using Server.Extensions;
 using Server.SignalR;
 
@@ -16,6 +17,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "_assets")),
+    RequestPath = "/assets",
+});
 
 app.UseHttpsRedirection();
 

@@ -68,19 +68,5 @@ namespace Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
             }
         }
-
-        [Authorize(Policy = Policies.Admin)]
-        [HttpPost("AddOrCreateStation")]
-        public async Task<ActionResult> AddOrCreateStation([FromBody] string input)
-        {
-            try 
-            {
-                return Ok();
-            }
-            catch (Exception ex) 
-            {
-                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
-            }
-        }
     }
 }
