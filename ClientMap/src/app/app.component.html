@@ -3,5 +3,7 @@
     <mat-spinner></mat-spinner>
 </div>
 
+<app-camera-add-or-edit-modal *ngIf="cameraAddOrEdit.isOpen | async"></app-camera-add-or-edit-modal>
 <app-camera-detail-modal *ngIf="cameraDetail.isOpen | async"></app-camera-detail-modal>
+<app-station-add-or-edit-modal *ngIf="stationAddOrEdit.isOpen | async"></app-station-add-or-edit-modal>
 <app-station-detail-modal *ngIf="stationDetail.isOpen | async"></app-station-detail-modal>

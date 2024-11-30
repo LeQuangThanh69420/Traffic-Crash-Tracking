@@ -14,6 +14,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CameraDetailModalComponent } from './_modals/camera-detail-modal/camera-detail-modal.component';
 import { StationDetailModalComponent } from './_modals/station-detail-modal/station-detail-modal.component';
+import { CameraAddOrEditModalComponent } from './_modals/camera-add-or-edit-modal/camera-add-or-edit-modal.component';
+import { StationAddOrEditModalComponent } from './_modals/station-add-or-edit-modal/station-add-or-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { StationDetailModalComponent } from './_modals/station-detail-modal/stat
     LoginComponent,
     MainComponent,
     CameraDetailModalComponent,
-    StationDetailModalComponent
+    StationDetailModalComponent,
+    CameraAddOrEditModalComponent,
+    StationAddOrEditModalComponent
   ],
   imports: [
     BrowserModule,

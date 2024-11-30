@@ -177,6 +177,10 @@ circle {
     align-items: center;
 }
 
+.img-btn {
+    height: 28px;
+}
+
 .status {
     margin: 8px;
     height: 12px;

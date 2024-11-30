@@ -3,6 +3,10 @@ import { StationLoginInputDTO } from '../_DTOs/StationLoginInputDTO';
 import { StationControllerService } from '../_services/station-controller.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { CameraAddOrEditModalService } from '../_modals/camera-add-or-edit-modal.service';
+import { CameraDetailModalService } from '../_modals/camera-detail-modal.service';
+import { StationAddOrEditModalService } from '../_modals/station-add-or-edit-modal.service';
+import { StationDetailModalService } from '../_modals/station-detail-modal.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +20,11 @@ export class LoginComponent implements OnInit {
   constructor(
     private stationController: StationControllerService, 
     private router: Router, 
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    public cameraAddOrEdit: CameraAddOrEditModalService, 
+    public cameraDetail: CameraDetailModalService,
+    public stationAddOrEdit: StationAddOrEditModalService,
+    public stationDetail: StationDetailModalService,) { }
 
   ngOnInit() {
     if(this.stationController.currentUser) {
