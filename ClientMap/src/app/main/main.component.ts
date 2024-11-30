@@ -9,7 +9,9 @@ import { CameraGetCamerasOutputDTO } from '../_DTOs/CameraGetCamerasOutputDTO';
 import { StationGetStationsOutputDTO } from '../_DTOs/StationGetStationsOutputDTO';
 import { CameraControllerService } from '../_services/camera-controller.service';
 import { StationControllerService } from '../_services/station-controller.service';
+import { CameraAddOrEditModalService } from '../_modals/camera-add-or-edit-modal.service';
 import { CameraDetailModalService } from '../_modals/camera-detail-modal.service';
+import { StationAddOrEditModalService } from '../_modals/station-add-or-edit-modal.service';
 import { StationDetailModalService } from '../_modals/station-detail-modal.service';
 
 @Component({
@@ -35,8 +37,10 @@ export class MainComponent implements OnInit {
     private cameraController: CameraControllerService,
     private toastr: ToastrService,
     public presence: PresenceService,
-    public cameraDetail: CameraDetailModalService,
-    public stationDetail: StationDetailModalService) { }
+    private cameraAddOrEdit: CameraAddOrEditModalService, 
+    private cameraDetail: CameraDetailModalService,
+    private stationAddOrEdit: StationAddOrEditModalService,
+    private stationDetail: StationDetailModalService,) { }
 
   LoadMap() {
     this.map = L.map('map', { attributionControl: false })

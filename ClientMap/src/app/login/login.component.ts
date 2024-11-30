@@ -21,10 +21,10 @@ export class LoginComponent implements OnInit {
     private stationController: StationControllerService, 
     private router: Router, 
     private toastr: ToastrService,
-    public cameraAddOrEdit: CameraAddOrEditModalService, 
-    public cameraDetail: CameraDetailModalService,
-    public stationAddOrEdit: StationAddOrEditModalService,
-    public stationDetail: StationDetailModalService,) { }
+    private cameraAddOrEdit: CameraAddOrEditModalService, 
+    private cameraDetail: CameraDetailModalService,
+    private stationAddOrEdit: StationAddOrEditModalService,
+    private stationDetail: StationDetailModalService,) { }
 
   ngOnInit() {
     if(this.stationController.currentUser) {
