@@ -68,5 +68,24 @@ namespace Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
             }
         }
+
+        [Authorize(Policy = Policies.Admin)]
+        [HttpPost("AddOrEdit")]
+        public async Task<ActionResult> AddOrEdit(StationAddOrEditInputDTO input)
+        {
+            try 
+            {
+                if (string.IsNullOrWhiteSpace(input.StationName) || string.IsNullOrWhiteSpace(input.Address)) return BadRequest(new { message = "Input invalid"});
+                if (input.Username.Length < 8 || input.Username.Length > 16 || input.Password.Length < 8 || input.Password.Length > 16) return BadRequest(new { message = "Username or Password invalid"});
+                if (input.Longitude < -180 || input.Longitude > 180 || input.Latitude < -90 || input.Latitude > 90) return BadRequest(new { message = "Input invalid"});
+                if (await _uow.StationRepository.StationNameExists(input.StationName)) return BadRequest(new { message = "Station Name already exists"});
+                if (await _uow.StationRepository.UsernameExists(input.Username)) return BadRequest(new { message = "Username already exists"});
+                return Ok(await _uow.StationRepository.AddOrEdit(input));
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
+            }
+        }
     }
 }
