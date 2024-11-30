@@ -251,6 +251,8 @@ circle {
 }
 
 .login-form-input-fs:focus-within .login-form-input-lg {
+    padding-inline-start: 4px;
+    padding-inline-end: 4px;
     display: block;
     color: var(--pri);
 }
