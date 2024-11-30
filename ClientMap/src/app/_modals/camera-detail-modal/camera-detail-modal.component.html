@@ -9,6 +9,7 @@
                         'modal-btn-unactive': cameraDetail.input.isActive,
                         'modal-btn-active': !cameraDetail.input.isActive
                     }" 
+                    [hidden]="stationController.currentUser.role != 'Admin'"
                     (click)="ChangeStatus()">
                     {{ cameraDetail.input.isActive ? 'Unactive' : 'Active' }}
                 </button>

@@ -30,6 +30,10 @@ export class LoginComponent implements OnInit {
     if(this.stationController.currentUser) {
       this.router.navigate(['/main']);
     }
+    this.cameraAddOrEdit.Close();
+    this.cameraDetail.Close();
+    this.stationAddOrEdit.Close();
+    this.stationDetail.Close();
   }
 
   showPassword() {

@@ -1,7 +1,9 @@
 <div class="modal-bg">
     <div class="modal-layout white-layout">
-        <div class="modal-info">
-            <h1>{{stationDetail.input.stationName}}</h1>
+        <div class="modal-info" style="width: 500px;">
+            <h1>{{stationDetail.input.stationName}} - {{stationDetail.input.role}}</h1>
+            <p>{{stationDetail.input.address}}</p>
+            <hr>
             <div class="modal-btn-gr">
                 <button class="modal-btn" 
                     [ngClass]="{
