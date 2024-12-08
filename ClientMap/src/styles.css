@@ -33,6 +33,16 @@ input:focus::placeholder {
     color: transparent;
 }
 
+input:disabled {
+    filter: grayscale(75%);
+    background-color: #cccccc1f;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+   opacity: 1;
+}
+
 button {
     cursor: pointer;
     border-radius: 8px;
@@ -104,6 +114,15 @@ circle {
     height: 360px;
 }
 
+.modal-input {
+    width: 260px;
+    height: 28px;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 8px;
+}
+
 .modal-btn {
     font-size: large;
     width: 100px;
@@ -130,8 +149,13 @@ circle {
 }
 
 .modal-btn-gr {
+    position: relative;
     display: flex;
     flex-direction: row;
+}
+
+path[class="leaflet-interactive"] {
+    animation: fa-blink 1.5s linear infinite;
 }
 
 .leaflet-marker-icon[src="/assets/marker/Marker-Camera-Online.svg"],
