@@ -76,10 +76,16 @@ namespace Server.Controllers
             try 
             {
                 if (string.IsNullOrWhiteSpace(input.StationName) || string.IsNullOrWhiteSpace(input.Address)) return BadRequest(new { message = "Input invalid"});
-                if (input.Username.Length < 8 || input.Username.Length > 16 || input.Password.Length < 8 || input.Password.Length > 16) return BadRequest(new { message = "Username or Password invalid"});
+                if (input.Username.Length < 8 || input.Username.Length > 16) return BadRequest(new { message = "Username invalid"});
                 if (input.Longitude < -180 || input.Longitude > 180 || input.Latitude < -90 || input.Latitude > 90) return BadRequest(new { message = "Input invalid"});
-                if (await _uow.StationRepository.StationNameExists(input.StationName)) return BadRequest(new { message = "Station Name already exists"});
-                if (await _uow.StationRepository.UsernameExists(input.Username)) return BadRequest(new { message = "Username already exists"});
+                if (!string.IsNullOrWhiteSpace(input.Password)) {
+                    if (input.Password.Length < 8 || input.Password.Length > 16) return BadRequest(new { message = "Password invalid"});
+                }
+                if (input.StationId == 0) {
+                    if (string.IsNullOrWhiteSpace(input.Password)) return BadRequest(new { message = "Password invalid"});
+                    if (await _uow.StationRepository.StationNameExists(input.StationName)) return BadRequest(new { message = "Station Name already exists"});
+                    if (await _uow.StationRepository.UsernameExists(input.Username)) return BadRequest(new { message = "Username already exists"});
+                }
                 return Ok(await _uow.StationRepository.AddOrEdit(input));
             }
             catch (Exception ex) 

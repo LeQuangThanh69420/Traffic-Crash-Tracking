@@ -42,6 +42,7 @@ namespace Server.Data.Repositories
                 .Select(s => new StationGetStationsOutputDTO() {
                     StationId = s.StationId,
                     StationName = s.StationName,
+                    Username = s.Username,
                     Role = s.Role,
                     Address = s.Address,
                     Longitude = s.Location.Coordinate.X,
@@ -69,7 +70,7 @@ namespace Server.Data.Repositories
             else {
                 var station = await _context.Station.FirstOrDefaultAsync(s => s.StationId == input.StationId);
                 if (station != null) {
-                    station.Password = input.Password;
+                    if (!string.IsNullOrWhiteSpace(input.Password)) station.Password = input.Password;
                     station.Address = input.Address;
                     station.Location.Coordinate.X = input.Longitude;
                     station.Location.Coordinate.Y = input.Latitude;
