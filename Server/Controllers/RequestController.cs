@@ -31,5 +31,18 @@ namespace Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
             }
         }
+
+        [HttpGet("GetRequestsLocation")]
+        public async Task<ActionResult> GetRequestsLocation()
+        {
+            try 
+            {
+                return Ok(await _uow.RequestRepository.GetRequestsLocation());
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
+            }
+        }
     }
 }

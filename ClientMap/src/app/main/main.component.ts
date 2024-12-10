@@ -13,6 +13,7 @@ import { CameraAddOrEditModalService } from '../_modals/camera-add-or-edit-modal
 import { CameraDetailModalService } from '../_modals/camera-detail-modal.service';
 import { StationAddOrEditModalService } from '../_modals/station-add-or-edit-modal.service';
 import { StationDetailModalService } from '../_modals/station-detail-modal.service';
+import { RequestControllerService } from '../_services/request-controller.service';
 
 @Component({
   selector: 'app-main',
@@ -27,6 +28,7 @@ export class MainComponent implements OnInit {
   stationMarkerUpdated: Subscription;
   cameraMarkerUpdated: Subscription;
   statusMarkerUpdated: Subscription;
+  waringCircleUpdated: Subscription;
 
   stationMarkers: Map<string, L.Marker<any>> = new Map();
   cameraMarkers: Map<string, L.Marker<any>> = new Map();
@@ -34,9 +36,13 @@ export class MainComponent implements OnInit {
   stations: StationGetStationsOutputDTO[] = [];
   cameras: CameraGetCamerasOutputDTO[] = [];
 
+  waringCircle: L.Circle<any>[] = [];
+  warings: any[] = [];
+
   constructor(
     public stationController: StationControllerService,
     private cameraController: CameraControllerService,
+    private requestController: RequestControllerService,
     private toastr: ToastrService,
     public presence: PresenceService,
     public cameraAddOrEdit: CameraAddOrEditModalService, 
@@ -129,6 +135,26 @@ export class MainComponent implements OnInit {
     }
   }
 
+  LoadWaringsCirle() {
+    this.waringCircle.forEach((e) => {
+      this.map.removeLayer(e);
+    });
+    this.waringCircle = [];
+    this.warings.forEach((e) => {
+      this.waringCircle.push(
+        L.circle([e.y1, e.x1], {
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0.5,
+          radius: this.map.distance([e.y1, e.x1], [e.y2, e.x2])
+        })
+      );
+    });
+    this.waringCircle.forEach((e) => {
+      this.map.addLayer(e);
+    });
+  }
+
   MarkerUpdate() {
     this.stationUpdated = this.stationAddOrEdit.stationUpdated.subscribe(() => {
       this.GetStations();
@@ -160,6 +186,16 @@ export class MainComponent implements OnInit {
         return;
       }
     });
+    this.waringCircleUpdated = this.presence.waringCircleUpdated.subscribe((result) => {
+      var item = this.warings.find(w => w.x1 === result.x1 && w.y1 === result.y1 && w.x2 === result.x2 && w.y2 === result.y2)
+      if (item) {
+        item.count += 1;
+      }
+      else {
+        this.warings.push({ count: 1, x1: result.x1, y1: result.y1, x2: result.x2, y2: result.y2});
+      }
+      this.LoadWaringsCirle();
+    });
   }
 
   GetStations() {
@@ -180,6 +216,15 @@ export class MainComponent implements OnInit {
     });
   }
 
+  GetWarings() {
+    this.requestController.GetRequestsLocation().subscribe(response => {
+      this.warings = response;
+      this.LoadWaringsCirle();
+    }, error => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
   ngOnInit() {
     this.LoadMap();
     this.MarkerUpdate();
@@ -187,6 +232,7 @@ export class MainComponent implements OnInit {
     setTimeout(() => {
       this.GetStations();
       this.GetCameras();
+      this.GetWarings();
     }, 0)
 
   }

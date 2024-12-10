@@ -79,11 +79,19 @@ namespace Server.SignalR
                 var fileName = $"{detail}.jpg";
                 byte[] frameBytes = Convert.FromBase64String(frameBase64);
                 await File.WriteAllBytesAsync($"./_assets/{fileName}", frameBytes);
-                var success = await _uow.RequestRepository
+                dynamic result = await _uow.RequestRepository
                     .AddRequest(camera.CameraId, 
                     camera.Location.Coordinate.X,
                     camera.Location.Coordinate.Y, detail, $"assets/{fileName}");
+                if (result.success) {
+                    await Clients.Group(ChannelsGroups.Station).SendAsync(Channels.RequestAdded, new { x1 = result.x1, y1 = result.y1,  x2 = result.x2, y2 = result.y2,});
+                }
             }
+        }
+
+        [Authorize(Policy = Policies.Station)]
+        public async Task CheckRequest()
+        {
         }
 
         [Authorize(Policy = Policies.Admin)]

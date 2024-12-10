@@ -19,6 +19,7 @@ export class PresenceService {
   stationMarkerUpdated = new Subject<void>();
   cameraMarkerUpdated = new Subject<void>();
   statusMarkerUpdated = new Subject<any>();
+  waringCircleUpdated = new Subject<any>();
 
   constructor(
     private stationController: StationControllerService, 
@@ -81,6 +82,13 @@ export class PresenceService {
     this.hubConnection.on("ForcedDisconnect", () => {
       this.stopHubConnection();
       this.stationController.Logout();
+    });
+
+    this.hubConnection.on("RequestAdded", (any) => {
+      this.waringCircleUpdated.next(any);
+    });
+
+    this.hubConnection.on("RequestChecked", (any) => {
     });
   }
 

@@ -11,5 +11,7 @@ namespace Server.Data
         public const string ReceiveFrameBase64 = "ReceiveFrameBase64";
         public const string ChangeStatus = "ChangeStatus";
         public const string ForcedDisconnect = "ForcedDisconnect";
+        public const string RequestAdded = "RequestAdded";
+        public const string RequestChecked = "RequestChecked";
     }
 }

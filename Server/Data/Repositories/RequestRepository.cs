@@ -16,11 +16,10 @@ namespace Server.Data.Repositories
 
         public async Task<List<object>> GetRequestsByCamera(long cameraId)
         {
-            Console.WriteLine(cameraId);
-            var request = from Request in _context.Request
+            var requests = from Request in _context.Request
                 join Camera in _context.Camera on Request.CameraId equals Camera.CameraId
                 join Station in _context.Station on Request.StationId equals Station.StationId into ps_jointable
-                from p in ps_jointable.DefaultIfEmpty()
+                from Station in ps_jointable.DefaultIfEmpty()
                 join RecStation in _context.Station on Request.RecommendStationId equals RecStation.StationId
                 orderby Request.CreatedDate descending
                 where Request.CameraId == cameraId
@@ -28,13 +27,10 @@ namespace Server.Data.Repositories
                     RequestId = Request.RequestId,
                     CameraId = Request.CameraId,
                     CameraName = Camera.CameraName,
-                    CameraLongitude = Camera.Location.Coordinate.X,
-                    CameraLatitude = Camera.Location.Coordinate.Y,
                     RecStationId = Request.RecommendStationId,
                     RecStationName = RecStation.StationName,
-                    RecStationLongitude = RecStation.Location.Coordinate.X,
-                    RecStationLatitude = RecStation.Location.Coordinate.Y,
                     StationId = Request.StationId,
+                    StationName = Station.StationName,
                     CreatedDate = Request.CreatedDate,
                     Detail = Request.Detail,
                     PhotoURL = Request.PhotoURL,
@@ -42,10 +38,36 @@ namespace Server.Data.Repositories
                     CheckedDate = Request.CheckedDate,
                     Description = Request.Description
                 };
-            return await request.ToListAsync<object>();
+            return await requests.ToListAsync<object>();
         }
 
-        public async Task<bool> AddRequest(long cameraId, double cameraLongitude, double cameraLatitude, string detail, string photoURL)
+        public async Task<List<object>> GetRequestsLocation()
+        {
+            var rqls = (await _context.Request
+                .Join(_context.Camera, Request => Request.CameraId, Camera => Camera.CameraId, (Request, Camera) => new { Request, Camera })
+                .Join(_context.Station, rc => rc.Request.RecommendStationId, Station => Station.StationId, (rc, Station) => new { rc.Request, rc.Camera, Station })
+                .Where(x => x.Request.Checked == null)
+                .ToListAsync())
+                .GroupBy(x => new
+                {
+                    CameraLongitude = x.Camera.Location.Coordinate.X,
+                    CameraLatitude = x.Camera.Location.Coordinate.Y,
+                    RecStationLongitude = x.Station.Location.Coordinate.X,
+                    RecStationLatitude = x.Station.Location.Coordinate.Y
+                })
+                .Select(g => new
+                {
+                    Count = g.Count(),
+                    x1 = g.Key.CameraLongitude,
+                    y1 = g.Key.CameraLatitude,
+                    x2 = g.Key.RecStationLongitude,
+                    y2 = g.Key.RecStationLatitude
+                })
+                .ToList();
+            return rqls.Cast<object>().ToList();
+        }
+
+        public async Task<object> AddRequest(long cameraId, double cameraLongitude, double cameraLatitude, string detail, string photoURL)
         {
             var searchPoint = new Point(cameraLongitude, cameraLatitude) { SRID = 4326 };
             var nearStation = await _context.Station
@@ -63,7 +85,18 @@ namespace Server.Data.Repositories
                 Description = null,
             };
             _context.Request.Add(request);
-            return await _context.SaveChangesAsync() > 0;
+            return new {
+                success = await _context.SaveChangesAsync() > 0,
+                x1 = cameraLongitude,
+                y1 = cameraLatitude,
+                x2 = nearStation.Location.Coordinate.X,
+                y2 = nearStation.Location.Coordinate.Y,
+            };
+        }
+
+        public async Task<bool> CheckRequest()
+        {
+            return false;
         }
     }
 }
