@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Server.Data.DTOs;
 using Server.Data.Entities;
 using Server.Data.IRepositories;
+using NetTopologySuite.Geometries;
 
 namespace Server.Data.Repositories
 {
@@ -11,6 +12,11 @@ namespace Server.Data.Repositories
         public CameraRepository(DataContext context)
         {
             _context = context;
+        }
+
+        public async Task<bool> CameraNameExists(string cameraName)
+        {
+            return await _context.Camera.AnyAsync(x => x.CameraName == cameraName);
         }
 
         public async Task<Camera?> GetCameraByNameAndActive(string cameraName)
@@ -36,6 +42,28 @@ namespace Server.Data.Repositories
                     IsActive = s.IsActive,
                 })
                 .ToListAsync();
+        }
+
+        public async Task<bool> AddOrEdit(CameraAddOrEditInputDTO input)
+        {
+            if (input.CameraId == 0) {
+                var camera = new Camera {
+                    CameraName = input.CameraName,
+                    Location = new Point(input.Longitude, input.Latitude) { SRID = 4326 },
+                    IsActive = true,
+                };
+                _context.Camera.Add(camera);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            else {
+                var camera = await _context.Camera.FirstOrDefaultAsync(s => s.CameraId == input.CameraId);
+                if (camera != null) {
+                    camera.Location.Coordinate.X = input.Longitude;
+                    camera.Location.Coordinate.Y = input.Latitude;
+                    return await _context.SaveChangesAsync() > 0;
+                }
+                else return false;
+            }
         }
     }
 }

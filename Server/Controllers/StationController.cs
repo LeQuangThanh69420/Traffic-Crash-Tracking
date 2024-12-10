@@ -86,7 +86,7 @@ namespace Server.Controllers
                     if (await _uow.StationRepository.StationNameExists(input.StationName)) return BadRequest(new { message = "Station Name already exists"});
                     if (await _uow.StationRepository.UsernameExists(input.Username)) return BadRequest(new { message = "Username already exists"});
                 }
-                return Ok(await _uow.StationRepository.AddOrEdit(input));
+                return Ok(new { success = await _uow.StationRepository.AddOrEdit(input) });
             }
             catch (Exception ex) 
             {

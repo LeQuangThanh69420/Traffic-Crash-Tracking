@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Data;
+using Server.Data.DTOs;
 using Server.Data.IRepositories;
 using Server.Services;
 
@@ -43,6 +44,25 @@ namespace Server.Controllers
             try 
             {
                 return Ok(await _uow.CameraRepository.GetCameras());
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
+            }
+        }
+
+        [Authorize(Policy = Policies.Admin)]
+        [HttpPost("AddOrEdit")]
+        public async Task<ActionResult> AddOrEdit(CameraAddOrEditInputDTO input)
+        {
+            try 
+            {
+                if (string.IsNullOrWhiteSpace(input.CameraName)) return BadRequest(new { message = "Input invalid"});
+                if (input.Longitude < -180 || input.Longitude > 180 || input.Latitude < -90 || input.Latitude > 90) return BadRequest(new { message = "Input invalid"});
+                if (input.CameraId == 0) {
+                    if (await _uow.CameraRepository.CameraNameExists(input.CameraName)) return BadRequest(new { message = "Camera Name already exists"});
+                }
+                return Ok(new { success = await _uow.CameraRepository.AddOrEdit(input) });
             }
             catch (Exception ex) 
             {
