@@ -22,7 +22,9 @@ import { StationDetailModalService } from '../_modals/station-detail-modal.servi
 export class MainComponent implements OnInit {
   map: LeafletMap = null!;
   markers = markers;
-  stationMarkerUpdate: Subscription;
+  stationUpdated: Subscription;
+  cameraUpdated: Subscription;
+  stationMarkerUpdated: Subscription;
   cameraMarkerUpdated: Subscription;
   statusMarkerUpdated: Subscription;
 
@@ -37,9 +39,9 @@ export class MainComponent implements OnInit {
     private cameraController: CameraControllerService,
     private toastr: ToastrService,
     public presence: PresenceService,
-    private cameraAddOrEdit: CameraAddOrEditModalService, 
+    public cameraAddOrEdit: CameraAddOrEditModalService, 
     private cameraDetail: CameraDetailModalService,
-    private stationAddOrEdit: StationAddOrEditModalService,
+    public stationAddOrEdit: StationAddOrEditModalService,
     private stationDetail: StationDetailModalService,) { }
 
   LoadMap() {
@@ -48,8 +50,10 @@ export class MainComponent implements OnInit {
       .on("click", (e) => {
         if (this.isAdding == true) {
           if (this.tab == "Camera") {
+            this.cameraAddOrEdit.Open({longitude: e.latlng.lng, latitude: e.latlng.lat});
           }
           if (this.tab == "Station") {
+            this.stationAddOrEdit.Open({longitude: e.latlng.lng, latitude: e.latlng.lat});
           }
         }
       })
@@ -126,15 +130,18 @@ export class MainComponent implements OnInit {
   }
 
   MarkerUpdate() {
-    this.stationMarkerUpdate = this.presence.stationMarkerUpdated.subscribe(() => {
+    this.stationUpdated = this.stationAddOrEdit.stationUpdated.subscribe(() => {
+      this.GetStations();
+    });
+    this.cameraUpdated = this.cameraAddOrEdit.cameraUpdated.subscribe(() => {
+      this.GetCameras();
+    });
+    this.stationMarkerUpdated = this.presence.stationMarkerUpdated.subscribe(() => {
       this.LoadStationMarker();
     });
     this.cameraMarkerUpdated = this.presence.cameraMarkerUpdated.subscribe(() => {
       this.LoadCameraMarker();
     });
-  }
-
-  StatusUpdate() {
     this.statusMarkerUpdated = this.presence.statusMarkerUpdated.subscribe((output: any) => {
       if (output.obj == "Station") {
         var station = this.stations.find(s => s.stationName === output.name);
@@ -176,7 +183,6 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.LoadMap();
     this.MarkerUpdate();
-    this.StatusUpdate();
     this.presence.createHubConnection();
     setTimeout(() => {
       this.GetStations();

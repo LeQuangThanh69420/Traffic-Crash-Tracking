@@ -15,4 +15,8 @@ export class CameraControllerService {
   GetCameras() {
     return this.http.get<CameraGetCamerasOutputDTO[]>(this.baseUrl + "Camera/GetCameras");
   }
+
+  AddOrEdit(input: any) {
+    return this.http.post<any>(this.baseUrl + "Camera/AddOrEdit", input)
+  }
 }

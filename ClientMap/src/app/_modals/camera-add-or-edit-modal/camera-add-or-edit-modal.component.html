@@ -1,1 +1,23 @@
-<p>camera-add-or-edit-modal works!</p>
+<div class="modal-bg">
+    <div class="modal-layout white-layout">
+        <div class="modal-info" >
+            <h2>{{!cameraAddOrEdit.input.cameraId ? 'Create' : 'Edit'}} Camera</h2>
+            <hr>
+            <input class="modal-input" [disabled]="cameraAddOrEdit.input.cameraId" type="text" placeholder="Camera Name" [(ngModel)]="cameraAddOrEdit.input.cameraName">
+            <input class="modal-input" type="number" placeholder="Longitude" min="-180" max="180" step="0.0001" [(ngModel)]="cameraAddOrEdit.input.longitude">
+            <input class="modal-input" type="number" placeholder="Latitude" min="-90" max="90" step="0.0001" [(ngModel)]="cameraAddOrEdit.input.latitude">
+            <hr>
+            <div class="modal-btn-gr">
+                <button class="modal-btn modal-btn-active" (click)="AddOrEdit()"
+                    [disabled]="
+                        !cameraAddOrEdit.input.cameraName ||
+                        !cameraAddOrEdit.input.longitude ||
+                        !cameraAddOrEdit.input.latitude
+                    ">
+                    {{!cameraAddOrEdit.input.cameraId ? 'Add' : 'Save'}}
+                </button>
+                <button class="modal-btn modal-btn-close" (click)="cameraAddOrEdit.Close()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

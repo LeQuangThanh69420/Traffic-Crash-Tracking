@@ -40,4 +40,8 @@ export class StationControllerService {
   GetStations() {
     return this.http.get<StationGetStationsOutputDTO[]>(this.baseUrl + "Station/GetStations");
   }
+
+  AddOrEdit(input: any) {
+    return this.http.post<any>(this.baseUrl + "Station/AddOrEdit", input)
+  }
 }
